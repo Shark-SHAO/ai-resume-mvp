@@ -56,8 +56,8 @@ module.exports = async function handler(req, res) {
 
   // 2. 公开仓库（最多100个）
   const [repos1, repos2] = await Promise.all([
-    ghGet('/user/repos?sort=updated&per_page=100&type=public&visibility=public&page=1', token),
-    ghGet('/user/repos?sort=updated&per_page=100&type=public&visibility=public&page=2', token),
+    ghGet('/user/repos?sort=updated&per_page=100&type=public&page=1', token),
+    ghGet('/user/repos?sort=updated&per_page=100&type=public&page=2', token),
   ]);
   const allRepos = [
     ...(Array.isArray(repos1) ? repos1 : []),
