@@ -5,1276 +5,622 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Resume — 测试你的 AI 能力等级</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+  --navy:#0A1628;--navy2:#0F1E35;--teal:#00D4A8;--teal2:#00A882;
+  --pink:#FF4D8D;--warn:#FFB347;--white:#F0F8FF;--muted:#5A7A96;
+  --card:#111F33;--border:#1E3A55;
+  --fd:'Syne',sans-serif;--fm:'Space Mono',monospace;--fb:'Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--navy);color:var(--white);font-family:var(--fb);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;opacity:.3;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
+.o1{width:500px;height:500px;background:rgba(0,212,168,.07);top:-120px;right:-120px;}
+.o2{width:400px;height:400px;background:rgba(255,77,141,.05);bottom:-80px;left:-80px;}
+.screen{position:relative;z-index:1;display:none;}
+.screen.active{display:flex;flex-direction:column;min-height:100vh;}
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid rgba(255,255,255,.05);}
+@media(max-width:600px){nav{padding:14px 16px;}}
+.logo{font-family:var(--fd);font-size:20px;font-weight:800;letter-spacing:-.5px;}
+.logo span{color:var(--teal);}
+.pill{background:rgba(0,212,168,.1);border:1px solid rgba(0,212,168,.25);padding:4px 14px;border-radius:20px;font-size:11px;color:var(--teal);font-family:var(--fm);letter-spacing:1px;}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:8px;border:none;font-family:var(--fd);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap;}
+.btn-p{background:var(--teal);color:var(--navy);}
+.btn-p:hover{background:var(--teal2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,212,168,.28);}
+.btn-g{background:transparent;color:var(--white);border:1px solid var(--border);}
+.btn-g:hover{border-color:var(--teal);color:var(--teal);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+/* ERROR BANNER */
+.err{background:rgba(255,77,141,.08);border:1px solid rgba(255,77,141,.3);border-radius:10px;padding:14px 18px;font-size:13px;color:#ff8ab3;margin:0 0 20px;display:none;}
 
-  :root {
-    --navy: #0A1628;
-    --navy2: #0F1E35;
-    --teal: #00D4A8;
-    --teal2: #00A882;
-    --pink: #FF4D8D;
-    --warn: #FFB347;
-    --white: #F0F8FF;
-    --muted: #5A7A96;
-    --card: #111F33;
-    --card2: #162540;
-    --border: #1E3A55;
-    --font-display: 'Syne', sans-serif;
-    --font-mono: 'Space Mono', monospace;
-    --font-body: 'Inter', sans-serif;
-  }
+/* ══ LANDING ══ */
+#s-land main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;}
+.eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:22px;display:inline-flex;align-items:center;gap:10px;}
+.eyebrow::before,.eyebrow::after{content:'';width:28px;height:1px;background:var(--teal);opacity:.5;}
+h1{font-family:var(--fd);font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1.05;letter-spacing:-2px;max-width:780px;margin:0 auto 22px;}
+h1 em{color:var(--teal);font-style:normal;}
+.sub{font-size:17px;color:rgba(240,248,255,.6);line-height:1.75;max-width:500px;margin:0 auto 44px;}
+.stats{display:flex;gap:44px;justify-content:center;flex-wrap:wrap;margin-top:64px;padding-top:44px;border-top:1px solid rgba(255,255,255,.06);}
+.sn{font-family:var(--fd);font-size:30px;font-weight:800;color:var(--teal);}
+.sl{font-size:12px;color:var(--muted);margin-top:4px;}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+/* ══ LOADING ══ */
+#s-loading main,#s-analyzing main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;}
+.spin{width:80px;height:80px;border-radius:50%;border:3px solid rgba(255,255,255,.06);border-top-color:var(--teal);animation:spin 1s linear infinite;margin:0 auto 28px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.steps{margin-top:28px;max-width:340px;}
+.step{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:14px;color:var(--muted);transition:color .3s;}
+.step.done{color:var(--teal);} .step.active{color:var(--white);}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s;}
+.step.done .dot{background:var(--teal);}
+.step.active .dot{background:var(--white);animation:pulse 1s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  body {
-    background: var(--navy);
-    color: var(--white);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* ══ QUIZ ══ */
+#s-quiz{padding:0;}
+.qwrap{max-width:680px;margin:0 auto;padding:36px 20px 80px;}
+.ph{display:flex;align-items:center;gap:14px;margin-bottom:36px;}
+.pt{flex:1;height:5px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;}
+.pf{height:100%;background:linear-gradient(90deg,var(--teal),var(--pink));border-radius:5px;transition:width .4s ease;}
+.pl{font-family:var(--fm);font-size:11px;color:var(--muted);white-space:nowrap;}
+.qcard{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:36px;margin-bottom:22px;animation:su .35s ease;}
+@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.qtag{display:inline-block;padding:3px 12px;border-radius:6px;font-family:var(--fm);font-size:10px;letter-spacing:1px;margin-bottom:18px;}
+.tm{background:rgba(0,212,168,.12);color:var(--teal);}
+.tc{background:rgba(255,77,141,.12);color:var(--pink);}
+.tp{background:rgba(255,179,71,.12);color:var(--warn);}
+.ta{background:rgba(100,149,237,.12);color:#6495ED;}
+.qtxt{font-family:var(--fd);font-size:19px;font-weight:600;line-height:1.4;margin-bottom:7px;}
+.qsub{font-size:13px;color:var(--muted);margin-bottom:26px;line-height:1.6;}
+.opts{display:flex;flex-direction:column;gap:10px;}
+.opt{background:var(--navy2);border:1.5px solid var(--border);border-radius:11px;padding:14px 18px;cursor:pointer;transition:all .18s;display:flex;align-items:flex-start;gap:13px;}
+.opt:hover{border-color:var(--teal);background:rgba(0,212,168,.05);}
+.opt.sel{border-color:var(--teal);background:rgba(0,212,168,.08);}
+.ol{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:11px;color:var(--muted);flex-shrink:0;}
+.opt.sel .ol{background:var(--teal);color:var(--navy);}
+.oc strong{display:block;font-size:14px;font-weight:600;margin-bottom:2px;}
+.oc span{font-size:12px;color:var(--muted);line-height:1.5;}
+.qnav{display:flex;justify-content:space-between;align-items:center;}
 
-  /* ── NOISE OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: .4; pointer-events: none; z-index: 0;
-  }
-
-  /* ── GLOW ORBS ── */
-  .orb {
-    position: fixed; border-radius: 50%;
-    filter: blur(80px); pointer-events: none; z-index: 0;
-  }
-  .orb1 { width:500px; height:500px; background:rgba(0,212,168,.08); top:-100px; right:-100px; }
-  .orb2 { width:400px; height:400px; background:rgba(255,77,141,.06); bottom:-80px; left:-80px; }
-  .orb3 { width:300px; height:300px; background:rgba(0,212,168,.05); top:50%; left:50%; transform:translate(-50%,-50%); }
-
-  /* ── LAYOUT ── */
-  .screen { position: relative; z-index: 1; display: none; }
-  .screen.active { display: flex; flex-direction: column; min-height: 100vh; }
-
-  /* ── NAV ── */
-  nav {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 40px;
-    border-bottom: 1px solid rgba(255,255,255,.05);
-  }
-  .logo {
-    font-family: var(--font-display); font-size: 20px; font-weight: 800;
-    letter-spacing: -0.5px;
-  }
-  .logo span { color: var(--teal); }
-  .nav-badge {
-    background: rgba(0,212,168,.1); border: 1px solid rgba(0,212,168,.3);
-    padding: 4px 12px; border-radius: 20px;
-    font-size: 11px; color: var(--teal); font-family: var(--font-mono);
-    letter-spacing: 1px;
-  }
-
-  /* ── BUTTONS ── */
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 14px 28px; border-radius: 8px; border: none;
-    font-family: var(--font-display); font-weight: 700; font-size: 15px;
-    cursor: pointer; transition: all .2s; text-decoration: none;
-  }
-  .btn-primary {
-    background: var(--teal); color: var(--navy);
-  }
-  .btn-primary:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,212,168,.3); }
-  .btn-ghost {
-    background: transparent; color: var(--white);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
-  .btn-pink { background: var(--pink); color: white; }
-  .btn-pink:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,77,141,.3); }
-  .btn-lg { padding: 18px 40px; font-size: 17px; }
-  .btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
-
-  /* ═══════════════════════════════════
-     SCREEN 1 — LANDING
-  ═══════════════════════════════════ */
-  #screen-landing {
-    align-items: center; justify-content: center; text-align: center;
-    padding: 60px 20px;
-  }
-  .hero-eyebrow {
-    font-family: var(--font-mono); font-size: 12px; letter-spacing: 3px;
-    color: var(--teal); margin-bottom: 24px;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .hero-eyebrow::before, .hero-eyebrow::after {
-    content: ''; width: 30px; height: 1px; background: var(--teal); opacity: .5;
-  }
-  h1 {
-    font-family: var(--font-display); font-size: clamp(42px, 6vw, 76px);
-    font-weight: 800; line-height: 1.05; letter-spacing: -2px;
-    max-width: 800px; margin: 0 auto 24px;
-  }
-  h1 em { color: var(--teal); font-style: normal; }
-  .hero-sub {
-    font-size: 18px; color: rgba(240,248,255,.6); line-height: 1.7;
-    max-width: 520px; margin: 0 auto 48px;
-  }
-  .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-
-  .stats-row {
-    display: flex; gap: 48px; justify-content: center; flex-wrap: wrap;
-    margin-top: 72px; padding-top: 48px;
-    border-top: 1px solid rgba(255,255,255,.06);
-  }
-  .stat-item { text-align: center; }
-  .stat-num { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--teal); }
-  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-  /* ═══════════════════════════════════
-     SCREEN 2 — GITHUB CONNECT
-  ═══════════════════════════════════ */
-  #screen-github {
-    align-items: center; justify-content: center; padding: 40px 20px;
-  }
-  .connect-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 48px; max-width: 520px; width: 100%;
-    text-align: center;
-  }
-  .gh-icon {
-    width: 72px; height: 72px; background: rgba(255,255,255,.05);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 24px; font-size: 36px;
-  }
-  .connect-card h2 { font-family: var(--font-display); font-size: 26px; font-weight: 700; margin-bottom: 12px; }
-  .connect-card p { color: rgba(240,248,255,.6); line-height: 1.7; margin-bottom: 32px; }
-  .permission-list { text-align: left; background: var(--navy2); border-radius: 12px; padding: 20px; margin-bottom: 32px; }
-  .permission-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; font-size: 14px; }
-  .permission-item:last-child { margin-bottom: 0; }
-  .perm-icon { font-size: 16px; margin-top: 1px; }
-  .perm-text strong { color: var(--white); display: block; }
-  .perm-text span { color: var(--muted); font-size: 12px; }
-  .privacy-note { font-size: 12px; color: var(--muted); margin-top: 16px; }
-  .privacy-note a { color: var(--teal); text-decoration: none; }
-
-  /* ── Loading animation ── */
-  .loading-bar {
-    width: 100%; height: 4px; background: rgba(255,255,255,.08);
-    border-radius: 4px; overflow: hidden; margin: 24px 0;
-  }
-  .loading-fill {
-    height: 100%; background: linear-gradient(90deg, var(--teal), var(--pink));
-    border-radius: 4px; width: 0%;
-    transition: width .3s ease;
-  }
-  .loading-text { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 8px; }
-
-  /* ═══════════════════════════════════
-     SCREEN 3 — QUIZ
-  ═══════════════════════════════════ */
-  #screen-quiz { padding: 0; }
-  .quiz-container { max-width: 700px; margin: 0 auto; padding: 40px 20px 80px; }
-
-  .progress-header {
-    display: flex; align-items: center; gap: 16px; margin-bottom: 40px;
-  }
-  .progress-track {
-    flex: 1; height: 6px; background: rgba(255,255,255,.08); border-radius: 6px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--teal), var(--pink));
-    border-radius: 6px; transition: width .4s ease;
-  }
-  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
-
-  .question-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 40px; margin-bottom: 24px;
-    animation: slideUp .4s ease;
-  }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .q-tag {
-    display: inline-block; padding: 4px 12px; border-radius: 6px;
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 1px;
-    margin-bottom: 20px;
-  }
-  .tag-model { background: rgba(0,212,168,.12); color: var(--teal); }
-  .tag-code { background: rgba(255,77,141,.12); color: var(--pink); }
-  .tag-prompt { background: rgba(255,179,71,.12); color: var(--warn); }
-  .tag-app { background: rgba(100,149,237,.12); color: #6495ED; }
-
-  .q-text {
-    font-family: var(--font-display); font-size: 20px; font-weight: 600;
-    line-height: 1.4; margin-bottom: 8px;
-  }
-  .q-sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
-
-  .options-grid { display: flex; flex-direction: column; gap: 12px; }
-  .option {
-    background: var(--navy2); border: 1.5px solid var(--border);
-    border-radius: 12px; padding: 16px 20px; cursor: pointer;
-    transition: all .2s; display: flex; align-items: flex-start; gap: 14px;
-  }
-  .option:hover { border-color: var(--teal); background: rgba(0,212,168,.05); }
-  .option.selected {
-    border-color: var(--teal); background: rgba(0,212,168,.08);
-  }
-  .option-letter {
-    width: 28px; height: 28px; border-radius: 6px;
-    background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 12px; color: var(--muted);
-    flex-shrink: 0;
-  }
-  .option.selected .option-letter { background: var(--teal); color: var(--navy); }
-  .option-content strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-  .option-content span { font-size: 13px; color: var(--muted); line-height: 1.5; }
-
-  .quiz-nav { display: flex; justify-content: space-between; align-items: center; }
-
-  /* ═══════════════════════════════════
-     SCREEN 4 — ANALYZING (loading)
-  ═══════════════════════════════════ */
-  #screen-analyzing {
-    align-items: center; justify-content: center; text-align: center; padding: 40px;
-  }
-  .analyzing-ring {
-    width: 120px; height: 120px; border-radius: 50%;
-    border: 3px solid rgba(255,255,255,.06);
-    border-top-color: var(--teal);
-    animation: spin 1s linear infinite;
-    margin: 0 auto 32px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 40px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .analyzing-steps { margin-top: 32px; max-width: 360px; }
-  .a-step {
-    display: flex; align-items: center; gap: 12px; padding: 10px 0;
-    font-size: 14px; color: var(--muted); transition: color .3s;
-  }
-  .a-step.done { color: var(--teal); }
-  .a-step.active { color: var(--white); }
-  .a-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; transition: background .3s; }
-  .a-step.done .a-dot { background: var(--teal); }
-  .a-step.active .a-dot { background: var(--white); animation: pulse 1s ease infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-  /* ═══════════════════════════════════
-     SCREEN 5 — PROFILE RESULT
-  ═══════════════════════════════════ */
-  #screen-result { padding: 0; }
-  .result-container { max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
-
-  /* Hero score section */
-  .result-hero {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-    margin-bottom: 32px; align-items: start;
-  }
-  @media(max-width:640px){ .result-hero { grid-template-columns:1fr; } }
-
-  .score-card {
-    background: linear-gradient(135deg, var(--card) 0%, #0D2040 100%);
-    border: 1px solid var(--border); border-radius: 20px; padding: 36px;
-    position: relative; overflow: hidden;
-  }
-  .score-card::before {
-    content: ''; position: absolute; top: -40px; right: -40px;
-    width: 160px; height: 160px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,212,168,.15), transparent 70%);
-  }
-  .score-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--muted); margin-bottom: 8px; }
-  .score-num {
-    font-family: var(--font-display); font-size: 72px; font-weight: 800;
-    color: var(--teal); line-height: 1; margin-bottom: 8px;
-    animation: countUp 1.5s ease;
-  }
-  @keyframes countUp { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: scale(1); } }
-  .score-level {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,212,168,.1); border: 1px solid rgba(0,212,168,.3);
-    padding: 6px 14px; border-radius: 20px;
-    font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--teal);
-    margin-bottom: 20px;
-  }
-  .score-desc { font-size: 14px; color: rgba(240,248,255,.6); line-height: 1.7; }
-  .percentile {
-    margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
-    display: flex; align-items: center; gap: 12px;
-  }
-  .percentile-bar { flex: 1; height: 6px; background: rgba(255,255,255,.08); border-radius: 6px; position: relative; overflow: hidden; }
-  .percentile-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--pink)); border-radius: 6px; }
-  .percentile-text { font-family: var(--font-mono); font-size: 12px; color: var(--teal); white-space: nowrap; }
-
-  /* Radar chart */
-  .radar-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 28px;
-  }
-  .radar-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; margin-bottom: 20px; }
-  #radarCanvas { width: 100%; max-width: 280px; display: block; margin: 0 auto; }
-
-  /* Dimensions */
-  .dims-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-  @media(max-width:540px){ .dims-grid { grid-template-columns: 1fr; } }
-  .dim-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 16px; padding: 20px;
-  }
-  .dim-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .dim-icon { font-size: 20px; }
-  .dim-name { font-size: 13px; font-weight: 600; }
-  .dim-weight { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-left: auto; }
-  .dim-bar-track { height: 6px; background: rgba(255,255,255,.08); border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
-  .dim-bar-fill { height: 100%; border-radius: 6px; transition: width 1s ease .3s; }
-  .dim-score-row { display: flex; justify-content: space-between; }
-  .dim-score { font-family: var(--font-mono); font-size: 13px; color: var(--teal); }
-  .dim-sub { font-size: 11px; color: var(--muted); }
-
-  /* AI Analysis */
-  .analysis-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 28px; margin-bottom: 32px;
-  }
-  .analysis-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .ai-badge {
-    display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
-    background: rgba(0,212,168,.1); border: 1px solid rgba(0,212,168,.2);
-    border-radius: 20px; font-size: 11px; color: var(--teal); font-family: var(--font-mono);
-  }
-  .analysis-text { font-size: 15px; line-height: 1.8; color: rgba(240,248,255,.8); }
-  .analysis-highlight {
-    display: flex; gap: 12px; margin-top: 20px; padding: 16px;
-    background: rgba(0,212,168,.06); border-radius: 12px; border-left: 3px solid var(--teal);
-  }
-  .analysis-highlight p { font-size: 14px; color: rgba(240,248,255,.7); line-height: 1.6; }
-
-  /* Badge section */
-  .badge-section {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 28px; margin-bottom: 32px;
-  }
-  .badge-section h3 { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin-bottom: 8px; }
-  .badge-section p { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
-  .badge-preview {
-    display: inline-flex; align-items: center; gap: 0;
-    margin-bottom: 20px; border-radius: 6px; overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .badge-left {
-    padding: 6px 10px; background: #555; font-size: 12px;
-    font-family: var(--font-mono); color: white;
-  }
-  .badge-right {
-    padding: 6px 10px; font-size: 12px;
-    font-family: var(--font-mono); color: white;
-  }
-  .badge-code-block {
-    background: var(--navy); border: 1px solid var(--border);
-    border-radius: 10px; padding: 16px 20px;
-    font-family: var(--font-mono); font-size: 12px; color: rgba(240,248,255,.7);
-    word-break: break-all; line-height: 1.7; position: relative;
-  }
-  .copy-btn {
-    position: absolute; top: 12px; right: 12px;
-    background: rgba(0,212,168,.1); border: 1px solid rgba(0,212,168,.3);
-    color: var(--teal); padding: 4px 10px; border-radius: 6px; cursor: pointer;
-    font-family: var(--font-mono); font-size: 11px; transition: all .2s;
-  }
-  .copy-btn:hover { background: rgba(0,212,168,.2); }
-
-  /* Actions */
-  .result-actions { display: flex; gap: 16px; flex-wrap: wrap; }
-
-  /* CTA box */
-  .cta-box {
-    background: linear-gradient(135deg, rgba(0,212,168,.08), rgba(255,77,141,.06));
-    border: 1px solid rgba(0,212,168,.2); border-radius: 20px; padding: 36px;
-    text-align: center;
-  }
-  .cta-box h3 { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-  .cta-box p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
-
-  /* ── Misc ── */
-  .section-title {
-    font-family: var(--font-display); font-size: 18px; font-weight: 700;
-    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
-  }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* ══ RESULT ══ */
+#s-result{padding:0;}
+.rw{max-width:920px;margin:0 auto;padding:36px 20px 80px;}
+.pbar{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:28px;}
+.av{width:48px;height:48px;border-radius:50%;border:2px solid var(--teal);}
+.pname{font-family:var(--fd);font-size:16px;font-weight:700;}
+.pmeta{font-size:12px;color:var(--muted);margin-top:3px;}
+.plink{margin-left:auto;font-family:var(--fm);font-size:11px;color:var(--teal);text-decoration:none;}
+.rhero{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px;}
+@media(max-width:620px){.rhero{grid-template-columns:1fr;}}
+.scard{background:linear-gradient(135deg,var(--card),#0D2040);border:1px solid var(--border);border-radius:18px;padding:32px;position:relative;overflow:hidden;}
+.scard::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(0,212,168,.14),transparent 70%);}
+.slbl{font-family:var(--fm);font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:6px;}
+.snum{font-family:var(--fd);font-size:68px;font-weight:800;color:var(--teal);line-height:1;margin-bottom:8px;}
+.slvl{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,168,.1);border:1px solid rgba(0,212,168,.25);padding:5px 13px;border-radius:20px;font-family:var(--fd);font-size:13px;font-weight:700;color:var(--teal);margin-bottom:16px;}
+.sdesc{font-size:13px;color:rgba(240,248,255,.6);line-height:1.7;}
+.spct{margin-top:18px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.spb{flex:1;height:5px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;}
+.spf{height:100%;background:linear-gradient(90deg,var(--teal),var(--pink));border-radius:5px;transition:width 1.2s ease;}
+.spt{font-family:var(--fm);font-size:11px;color:var(--teal);white-space:nowrap;}
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:24px;}
+.rtl{font-family:var(--fd);font-weight:700;font-size:15px;margin-bottom:16px;}
+.sec{font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sec::after{content:'';flex:1;height:1px;background:var(--border);}
+.dims{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+@media(max-width:500px){.dims{grid-template-columns:1fr;}}
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;}
+.dhdr{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.dw{font-family:var(--fm);font-size:10px;color:var(--muted);margin-left:auto;}
+.db{height:5px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;margin-bottom:7px;}
+.dbf{height:100%;border-radius:5px;transition:width 1s ease .2s;}
+.drow{display:flex;justify-content:space-between;}
+.dsc{font-family:var(--fm);font-size:12px;color:var(--teal);}
+.dsub{font-size:11px;color:var(--muted);}
+.projects{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+.pj{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;}
+.pjn{font-family:var(--fd);font-size:15px;font-weight:700;margin-bottom:5px;}
+.pjd{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.55;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.tag{padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--fm);}
+.tag-ai{background:rgba(0,212,168,.1);color:var(--teal);border:1px solid rgba(0,212,168,.2);}
+.tag-lang{background:rgba(255,255,255,.06);color:rgba(240,248,255,.6);}
+.pjh{font-size:12px;color:rgba(240,248,255,.7);line-height:1.6;border-left:2px solid var(--teal);padding-left:10px;}
+.aiscore{text-align:center;min-width:66px;}
+.aipct{font-family:var(--fd);font-size:26px;font-weight:800;line-height:1;}
+.aipct-l{font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--fm);}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
+.aibadge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;background:rgba(0,212,168,.08);border:1px solid rgba(0,212,168,.2);border-radius:20px;font-size:10px;color:var(--teal);font-family:var(--fm);margin-bottom:14px;}
+.atxt{font-size:14px;line-height:1.8;color:rgba(240,248,255,.8);}
+.ahint{display:flex;gap:12px;margin-top:16px;padding:14px;background:rgba(0,212,168,.05);border-radius:10px;border-left:3px solid var(--teal);}
+.ahint p{font-size:13px;color:rgba(240,248,255,.7);line-height:1.6;}
+.bsec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
+.bprev{display:inline-flex;align-items:center;border-radius:5px;overflow:hidden;border:1px solid var(--border);margin-bottom:16px;}
+.bl{padding:5px 9px;background:#555;font-size:12px;font-family:var(--fm);color:white;}
+.br{padding:5px 9px;font-size:12px;font-family:var(--fm);color:white;}
+.bcode{background:var(--navy);border:1px solid var(--border);border-radius:9px;padding:14px 44px 14px 18px;font-family:var(--fm);font-size:11px;color:rgba(240,248,255,.7);word-break:break-all;line-height:1.7;position:relative;}
+.cbtn{position:absolute;top:10px;right:10px;background:rgba(0,212,168,.1);border:1px solid rgba(0,212,168,.25);color:var(--teal);padding:3px 10px;border-radius:5px;cursor:pointer;font-family:var(--fm);font-size:10px;transition:all .2s;}
+.cbtn:hover{background:rgba(0,212,168,.2);}
+.cta{background:linear-gradient(135deg,rgba(0,212,168,.07),rgba(255,77,141,.05));border:1px solid rgba(0,212,168,.18);border-radius:18px;padding:32px;text-align:center;}
+.cta h3{font-family:var(--fd);font-size:20px;font-weight:700;margin-bottom:8px;}
+.cta p{color:var(--muted);font-size:13px;margin-bottom:22px;}
+.cta-a{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 </style>
 </head>
 <body>
+<div class="orb o1"></div><div class="orb o2"></div>
 
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
-
-<!-- ═══ SCREEN 1: LANDING ═══ -->
-<div id="screen-landing" class="screen active">
-  <nav>
-    <div class="logo">AI<span>Resume</span></div>
-    <span class="nav-badge">BETA · MVP</span>
-  </nav>
-  <main style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;">
-    <div class="hero-eyebrow">AI CAPABILITY INDEX</div>
-    <h1>你的 AI 能力<br>值得被<em>看见</em></h1>
-    <p class="hero-sub">
-      8 道场景题 + GitHub 数据分析，3 分钟生成你专属的 AI 能力证明。<br>
-      真实数据驱动，可分享，可嵌入 GitHub 主页。
-    </p>
-    <div class="hero-actions">
-      <button class="btn btn-primary btn-lg" onclick="startOAuth()">
-        🚀 开始测试 AI 能力
-      </button>
-      <button class="btn btn-ghost" onclick="goto('result-demo')">
-        👀 查看示例简历
-      </button>
-    </div>
-    <div class="stats-row">
-      <div class="stat-item">
-        <div class="stat-num">82%</div>
-        <div class="stat-label">开发者使用 AI 工具</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">56%</div>
-        <div class="stat-label">AI 技能薪资溢价</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">12%</div>
-        <div class="stat-label">能量化展示 AI 能力</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">5min</div>
-        <div class="stat-label">完成你的 AI 简历</div>
-      </div>
+<!-- ══ LANDING ══ -->
+<div id="s-land" class="screen active">
+  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">MVP · BETA</span></nav>
+  <main>
+    <div class="eyebrow">AI CAPABILITY INDEX</div>
+    <h1>你的 AI 能力<br>值得被<em>量化</em></h1>
+    <p class="sub">连接 GitHub + 8 道场景题，3 分钟生成基于真实数据的 AI 简历。可分享，可嵌入 GitHub 主页。</p>
+    <button class="btn btn-p" style="font-size:15px;padding:15px 32px;" onclick="startOAuth()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      连接 GitHub 开始测试
+    </button>
+    <div class="stats">
+      <div><div class="sn">82%</div><div class="sl">开发者使用 AI 工具</div></div>
+      <div><div class="sn">56%</div><div class="sl">AI 技能薪资溢价</div></div>
+      <div><div class="sn">12%</div><div class="sl">能量化展示 AI 能力</div></div>
+      <div><div class="sn">3min</div><div class="sl">完成你的 AI 简历</div></div>
     </div>
   </main>
 </div>
 
-<!-- ═══ SCREEN 2: GITHUB CONNECT ═══ -->
-<div id="screen-github" class="screen">
-  <nav>
-    <div class="logo">AI<span>Resume</span></div>
-    <span class="nav-badge">步骤 1/3</span>
-  </nav>
-  <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
-    <div class="connect-card" id="github-card">
-      <div class="gh-icon">⚙️</div>
-      <h2>连接你的 GitHub</h2>
-      <p>我们将读取你的公开 commit 记录、语言分布和项目数据，用于计算 ACI 评分中的 D2（编程工具）和 D3（AI 增强代码贡献）维度。</p>
-      <div class="permission-list">
-        <div class="permission-item">
-          <span class="perm-icon">✅</span>
-          <div class="perm-text">
-            <strong>读取公开仓库</strong>
-            <span>Commits、语言、Stars、PR 合并率</span>
-          </div>
-        </div>
-        <div class="permission-item">
-          <span class="perm-icon">✅</span>
-          <div class="perm-text">
-            <strong>读取贡献统计</strong>
-            <span>过去 12 个月的活跃度数据</span>
-          </div>
-        </div>
-        <div class="permission-item">
-          <span class="perm-icon">🔒</span>
-          <div class="perm-text">
-            <strong>不读取私有仓库代码</strong>
-            <span>你的代码内容完全不会被存储</span>
-          </div>
-        </div>
-      </div>
-      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="startOAuth()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        授权 GitHub 接入
-      </button>
-      <p class="privacy-note">🔐 数据加密传输 · 不存储代码内容 · 随时可撤销授权</p>
-
-      <!-- Loading state (hidden) -->
-      <div id="gh-loading" style="display:none;">
-        <div class="loading-bar"><div class="loading-fill" id="gh-progress"></div></div>
-        <div class="loading-text" id="gh-status">正在连接 GitHub...</div>
-      </div>
+<!-- ══ LOADING GITHUB ══ -->
+<div id="s-loading" class="screen">
+  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">读取数据中</span></nav>
+  <main>
+    <div class="spin"></div>
+    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:8px;">正在读取你的 GitHub 数据</h2>
+    <p style="color:var(--muted);margin-bottom:28px;">分析你的仓库和贡献记录...</p>
+    <div class="steps" id="lsteps">
+      <div class="step" id="ls1"><div class="dot"></div>验证 GitHub 授权</div>
+      <div class="step" id="ls2"><div class="dot"></div>读取仓库列表</div>
+      <div class="step" id="ls3"><div class="dot"></div>分析语言分布</div>
+      <div class="step" id="ls4"><div class="dot"></div>统计贡献数据</div>
+      <div class="step" id="ls5"><div class="dot"></div>识别 AI 信号</div>
     </div>
   </main>
 </div>
 
-<!-- ═══ SCREEN 3: QUIZ ═══ -->
-<div id="screen-quiz" class="screen">
-  <nav>
-    <div class="logo">AI<span>Resume</span></div>
-    <span class="nav-badge" id="quiz-nav-label">步骤 2/3</span>
-  </nav>
-  <div class="quiz-container">
-    <div class="progress-header">
-      <div class="progress-track">
-        <div class="progress-fill" id="quiz-progress" style="width:0%"></div>
-      </div>
-      <span class="progress-label" id="quiz-counter">1 / 8</span>
-    </div>
-    <div id="question-area"></div>
-    <div class="quiz-nav">
-      <button class="btn btn-ghost" id="btn-prev" onclick="prevQ()" style="display:none">← 上一题</button>
-      <button class="btn btn-primary" id="btn-next" onclick="nextQ()" disabled>
-        下一题 →
-      </button>
+<!-- ══ QUIZ ══ -->
+<div id="s-quiz" class="screen">
+  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">问卷 2/3</span></nav>
+  <div class="qwrap">
+    <div class="ph"><div class="pt"><div class="pf" id="qprog" style="width:0%"></div></div><span class="pl" id="qctr">1 / 8</span></div>
+    <div id="qarea"></div>
+    <div class="qnav">
+      <button class="btn btn-g" id="btn-prev" onclick="prevQ()" style="display:none">← 上一题</button>
+      <button class="btn btn-p" id="btn-next" onclick="nextQ()" disabled>下一题 →</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ SCREEN 4: ANALYZING ═══ -->
-<div id="screen-analyzing" class="screen">
-  <nav>
-    <div class="logo">AI<span>Resume</span></div>
-    <span class="nav-badge">分析中</span>
-  </nav>
-  <main style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;">
-    <div class="analyzing-ring">🤖</div>
-    <h2 style="font-family:var(--font-display);font-size:28px;font-weight:700;margin-bottom:8px;">正在生成你的 AI 简历</h2>
-    <p style="color:var(--muted);margin-bottom:32px;">Claude 正在分析你的能力数据...</p>
-    <div class="analyzing-steps" id="a-steps">
-      <div class="a-step" id="as-1"><div class="a-dot"></div>解析 GitHub 数据（342 commits）</div>
-      <div class="a-step" id="as-2"><div class="a-dot"></div>计算 AI 工具熟练度（D2）</div>
-      <div class="a-step" id="as-3"><div class="a-dot"></div>评估代码 AI 增强程度（D3）</div>
-      <div class="a-step" id="as-4"><div class="a-dot"></div>分析问卷行为画像</div>
-      <div class="a-step" id="as-5"><div class="a-dot"></div>生成 ACI 综合评分</div>
-      <div class="a-step" id="as-6"><div class="a-dot"></div>撰写能力分析报告</div>
+<!-- ══ ANALYZING ══ -->
+<div id="s-analyzing" class="screen">
+  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">DeepSeek 分析中</span></nav>
+  <main>
+    <div class="spin"></div>
+    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:8px;">DeepSeek 正在分析你的 AI 能力</h2>
+    <p style="color:var(--muted);margin-bottom:28px;">结合 GitHub 真实数据 + 问卷行为，生成专属报告...</p>
+    <div class="steps" id="asteps">
+      <div class="step" id="as1"><div class="dot"></div>解析仓库 AI 信号</div>
+      <div class="step" id="as2"><div class="dot"></div>计算六维度 ACI 评分</div>
+      <div class="step" id="as3"><div class="dot"></div>DeepSeek 筛选优质项目</div>
+      <div class="step" id="as4"><div class="dot"></div>生成个性化能力报告</div>
+      <div class="step" id="as5"><div class="dot"></div>生成 GitHub Badge</div>
     </div>
+    <div class="err" id="err-analyze" style="margin-top:24px;max-width:440px;"></div>
   </main>
 </div>
 
-<!-- ═══ SCREEN 5: RESULT ═══ -->
-<div id="screen-result" class="screen">
+<!-- ══ RESULT ══ -->
+<div id="s-result" class="screen">
   <nav>
     <div class="logo">AI<span>Resume</span></div>
-    <div style="display:flex;gap:12px;align-items:center;">
-      <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">airesume.dev/@you</span>
-      <button class="btn btn-ghost" style="padding:8px 16px;font-size:13px;" onclick="copyLink()">🔗 复制链接</button>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span id="share-url" style="font-family:var(--fm);font-size:11px;color:var(--muted);">airesume.dev/@—</span>
+      <button class="btn btn-g" style="padding:7px 14px;font-size:12px;" onclick="copyLink()">🔗 复制链接</button>
     </div>
   </nav>
-  <div class="result-container">
-
-    <!-- Hero: Score + Radar -->
-    <div class="result-hero">
-      <div class="score-card">
-        <div class="score-label">ACI — AI CAPABILITY INDEX</div>
-        <div class="score-num" id="r-score">—</div>
-        <div class="score-level" id="r-level">⭐ AI Builder · L4</div>
-        <p class="score-desc" id="r-desc">正在加载...</p>
-        <div class="percentile">
-          <div class="percentile-bar">
-            <div class="percentile-fill" id="r-pct-bar" style="width:0%"></div>
-          </div>
-          <span class="percentile-text" id="r-pct-text">Top —%</span>
-        </div>
+  <div class="rw">
+    <div class="pbar">
+      <img class="av" id="r-av" src="" alt="">
+      <div><div class="pname" id="r-nm">—</div><div class="pmeta" id="r-mt">—</div></div>
+      <a class="plink" id="r-gh" href="#" target="_blank">GitHub →</a>
+    </div>
+    <div class="rhero">
+      <div class="scard">
+        <div class="slbl">ACI — AI CAPABILITY INDEX</div>
+        <div class="snum" id="r-score">—</div>
+        <div class="slvl" id="r-level">⭐ —</div>
+        <p class="sdesc">基于你的 GitHub 真实数据 + 行为问卷综合评分</p>
+        <div class="spct"><div class="spb"><div class="spf" id="r-pbar" style="width:0%"></div></div><span class="spt" id="r-ptxt">Top —%</span></div>
       </div>
-      <div class="radar-card">
-        <div class="radar-title">📡 能力雷达图</div>
-        <canvas id="radarCanvas" width="280" height="280"></canvas>
+      <div class="rcard">
+        <div class="rtl">📡 能力雷达图</div>
+        <canvas id="radar" width="260" height="260"></canvas>
       </div>
     </div>
-
-    <!-- Dimensions -->
-    <div class="section-title">六维度评分</div>
-    <div class="dims-grid" id="dims-grid"></div>
-
-    <!-- AI Analysis -->
-    <div class="section-title">AI 能力分析报告</div>
-    <div class="analysis-card">
-      <div class="analysis-header">
-        <span class="ai-badge">✦ Claude 生成分析</span>
-      </div>
-      <div class="analysis-text" id="r-analysis">正在生成...</div>
-      <div class="analysis-highlight" id="r-highlight">
-        <span style="font-size:20px">💡</span>
-        <p id="r-tip">加载中...</p>
+    <div class="sec">六维度评分</div>
+    <div class="dims" id="dims"></div>
+    <div class="sec">🔍 AI 优质项目（DeepSeek 识别）</div>
+    <div class="projects" id="projects"></div>
+    <div class="sec">DeepSeek 能力分析报告</div>
+    <div class="acard">
+      <div class="aibadge">✦ DeepSeek 实时生成</div>
+      <p class="atxt" id="r-analysis">—</p>
+      <div class="ahint"><span style="font-size:18px">💡</span><p id="r-tip">—</p></div>
+    </div>
+    <div class="sec">GitHub Badge</div>
+    <div class="bsec">
+      <h3 style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:6px;">嵌入你的 GitHub README</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">将以下代码粘贴到 README.md，展示你的 AI 能力等级</p>
+      <div class="bprev"><span class="bl">AI Resume</span><span class="br" id="badge-r" style="background:#00D4A8">ACI — · —</span></div>
+      <div class="bcode" id="bcode">—<button class="cbtn" onclick="copyBadge()">复制</button></div>
+    </div>
+    <div class="cta">
+      <h3>🔓 接入更多数据，提升评分精度</h3>
+      <p>目前评分基于 GitHub + 问卷。接入 Claude Code 日志后 D1/D4 维度将更准确，且可与更多开发者横向对比。</p>
+      <div class="cta-a">
+        <button class="btn btn-p" onclick="alert('感谢你的参与！🎉\n\nClaude Code 数据接入将在正式版开放。\n你的测试对我们非常有价值！')">接入 Claude Code 数据</button>
+        <button class="btn btn-g" onclick="share()">分享我的 AI 简历</button>
       </div>
     </div>
-
-    <!-- Badge -->
-    <div class="section-title">GitHub Badge</div>
-    <div class="badge-section">
-      <h3>嵌入你的 GitHub README</h3>
-      <p>将以下代码粘贴到你的 README.md，让访问者一眼看到你的 AI 能力等级</p>
-      <div class="badge-preview">
-        <span class="badge-left">AI Resume</span>
-        <span class="badge-right" id="badge-right" style="background:#00C9A7;">ACI 1,840 · L4 Builder</span>
-      </div>
-      <div class="badge-code-block">
-        <span id="badge-code">加载中...</span>
-        <button class="copy-btn" onclick="copyBadge()">复制</button>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta-box">
-      <h3>🔓 接入更多数据，提升评分准确度</h3>
-      <p>目前仅基于 GitHub + 问卷数据评分。接入 Claude Code 日志和 API 用量后，评分将更准确，且可在更多维度与同行对比。</p>
-      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="alert('此功能将在正式版开放！感谢你的参与 🎉\n\n我们在收集用户反馈，你的测试对我们很有价值！')">
-          接入 Claude Code 数据
-        </button>
-        <button class="btn btn-ghost" onclick="shareResult()">分享我的 AI 简历</button>
-      </div>
-    </div>
-
   </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════
+const CLIENT_ID = 'Ov23liLyNYTpMt8fL9ns';
+const REDIRECT  = window.location.origin + '/api/auth/callback';
+
+// ══════════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════════
-const state = {
-  answers: {},
-  scores: null,
-  analysis: null,
-};
+// ══════════════════════════════════════════════════════
+const S = { token: null, ghData: null, answers: {} };
 
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// INIT — 从 URL 参数里取 token（OAuth 回调后）
+// ══════════════════════════════════════════════════════
+(function init() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('error')) {
+    history.replaceState({}, '', '/');
+    alert('GitHub 授权失败：' + p.get('error') + '\n请重试。');
+    return;
+  }
+  if (p.get('token')) {
+    S.token = p.get('token');
+    sessionStorage.setItem('gh_token', S.token);
+    history.replaceState({}, '', '/');
+    goto('loading');
+    fetchGitHub();
+    return;
+  }
+  const saved = sessionStorage.getItem('gh_token');
+  if (saved) S.token = saved;
+})();
+
+// ══════════════════════════════════════════════════════
 // NAVIGATION
-// ═══════════════════════════════════════════════════════
-function goto(screen) {
+// ══════════════════════════════════════════════════════
+function goto(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  if (screen === 'result-demo') {
-    loadDemoResult();
-    document.getElementById('screen-result').classList.add('active');
-  } else {
-    document.getElementById('screen-' + screen).classList.add('active');
-    if (screen === 'quiz') renderQuestion(currentQ);
-    if (screen === 'analyzing') startAnalysis();
-  }
-  window.scrollTo(0,0);
+  document.getElementById('s-' + id).classList.add('active');
+  window.scrollTo(0, 0);
 }
 
-// ═══════════════════════════════════════════════════════
-// GITHUB MOCK CONNECT
-// ═══════════════════════════════════════════════════════
-function mockGitHubConnect() {
-  const btn = event.target;
-  btn.disabled = true; btn.textContent = '连接中...';
-  document.getElementById('gh-loading').style.display = 'block';
+// ══════════════════════════════════════════════════════
+// STEP 1: GITHUB OAUTH
+// ══════════════════════════════════════════════════════
+function startOAuth() {
+  const url = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=read:user,public_repo&redirect_uri=${encodeURIComponent(REDIRECT)}`;
+  window.location.href = url;
+}
 
-  const statuses = [
-    '正在连接 GitHub...',
-    '读取 commit 记录（342 条）...',
-    '分析语言分布...',
-    '计算贡献图谱...',
-    '读取 PR 合并率...',
-    '✅ 数据读取完成！',
-  ];
+// ══════════════════════════════════════════════════════
+// STEP 2: FETCH GITHUB DATA
+// ══════════════════════════════════════════════════════
+async function fetchGitHub() {
+  const ids = ['ls1','ls2','ls3','ls4','ls5'];
   let i = 0;
-  const prog = document.getElementById('gh-progress');
-  const stat = document.getElementById('gh-status');
-
   const tick = setInterval(() => {
+    if (i > 0) document.getElementById(ids[i-1])?.classList.replace('active','done');
+    if (i < ids.length) document.getElementById(ids[i])?.classList.add('active');
     i++;
-    prog.style.width = (i / statuses.length * 100) + '%';
-    stat.textContent = statuses[i] || statuses[statuses.length-1];
-    if (i >= statuses.length - 1) {
-      clearInterval(tick);
-      setTimeout(() => goto('quiz'), 600);
-    }
-  }, 400);
-}
-
-// ═══════════════════════════════════════════════════════
-// QUIZ
-// ═══════════════════════════════════════════════════════
-const questions = [
-  {
-    tag: 'tag-model', tagText: 'AI 工具使用',
-    text: '你最近一个月，使用 AI 编程工具（Claude Code / Cursor / Copilot 等）的频率是？',
-    sub: '请选择最符合你实际情况的选项',
-    options: [
-      { l:'A', t:'几乎不用', d:'偶尔试试，不是工作流的一部分', score: 1 },
-      { l:'B', t:'每周几次', d:'用于特定任务，比如查文档或写测试', score: 2 },
-      { l:'C', t:'每天使用', d:'已经是日常编程的重要辅助工具', score: 3 },
-      { l:'D', t:'几乎全程依赖', d:'大部分代码都有 AI 参与，我负责架构和审查', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-code', tagText: 'AI 代码贡献',
-    text: '在你上周的代码提交中，AI 生成或辅助的代码大概占多少？',
-    sub: '这里指你 accept 了 AI 建议、让 AI 起草后你修改的代码',
-    options: [
-      { l:'A', t:'不到 10%', d:'基本自己写，AI 只是偶尔查询', score: 1 },
-      { l:'B', t:'10% – 30%', d:'一些样板代码和测试让 AI 生成', score: 2 },
-      { l:'C', t:'30% – 60%', d:'功能实现经常和 AI 协作完成', score: 3 },
-      { l:'D', t:'超过 60%', d:'AI 起草，我负责审查、修改和整合', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-prompt', tagText: 'Prompt 工程',
-    text: '当 AI 给出不满意的代码，你通常怎么做？',
-    sub: '选择你最常用的方式',
-    options: [
-      { l:'A', t:'重新描述一遍问题', d:'换种方式再说一次，看看结果', score: 1 },
-      { l:'B', t:'提供更多上下文', d:'贴上相关代码、错误信息或期望输出', score: 2 },
-      { l:'C', t:'分解成多步骤追问', d:'先确认理解，再一步一步引导到正确答案', score: 3 },
-      { l:'D', t:'使用结构化 prompt 框架', d:'角色设定 + 约束条件 + 示例输入输出，系统化引导', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-app', tagText: '应用构建',
-    text: '你是否曾独立用 AI 辅助，从零构建过一个完整的可运行应用或工具？',
-    sub: '包括个人项目、副业产品、内部工具等',
-    options: [
-      { l:'A', t:'还没有', d:'更多用于学习或日常编程辅助', score: 1 },
-      { l:'B', t:'构建过脚本或小工具', d:'几十到几百行，解决特定问题', score: 2 },
-      { l:'C', t:'构建过完整 Web 应用', d:'有前后端、可部署、别人可以用', score: 3 },
-      { l:'D', t:'构建过多个产品', d:'其中至少一个有真实用户，甚至有商业收入', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-model', tagText: '模型认知',
-    text: '面对同一个任务，你会如何选择 AI 工具或模型？',
-    sub: '这考验你对不同 AI 工具能力边界的认知',
-    options: [
-      { l:'A', t:'用习惯哪个就用哪个', d:'基本用一个固定的工具', score: 1 },
-      { l:'B', t:'根据任务类型粗略选择', d:'代码任务用 Cursor，写作用 Claude', score: 2 },
-      { l:'C', t:'对比不同模型的输出', d:'同一问题问多个模型，取最好的', score: 3 },
-      { l:'D', t:'有系统性的工具选择策略', d:'了解各模型的 context 窗口、推理能力、成本，并据此选择', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-code', tagText: '代码质量',
-    text: '当你接受 AI 生成的代码时，通常会做什么？',
-    sub: '你的代码审查习惯直接影响 AI 增强代码的质量',
-    options: [
-      { l:'A', t:'直接用，测试能跑就行', d:'主要看功能是否符合预期', score: 1 },
-      { l:'B', t:'读一遍，理解逻辑', d:'确保自己能看懂，会改错误', score: 2 },
-      { l:'C', t:'系统性 review，修改不合适的部分', d:'关注命名、边界情况、性能', score: 3 },
-      { l:'D', t:'深度重构，与代码库风格保持一致', d:'把 AI 代码当草稿，经过完整 review 后才 commit', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-prompt', tagText: '上下文管理',
-    text: '你如何管理和复用你的 Prompt 经验？',
-    sub: '好的 Prompt 知识管理习惯是高阶 AI 使用者的标志',
-    options: [
-      { l:'A', t:'每次现想现写', d:'没有专门整理，用完就算', score: 1 },
-      { l:'B', t:'在笔记里保存好用的 prompt', d:'有时候会复制过来用', score: 2 },
-      { l:'C', t:'有自己的 prompt 库或模板系统', d:'按场景分类，随时调用', score: 3 },
-      { l:'D', t:'Claude Projects / Custom GPT / System Prompt 工程', d:'有专属工作区、持久化上下文，构建了私人 AI 工作流', score: 4 },
-    ]
-  },
-  {
-    tag: 'tag-app', tagText: '社区影响力',
-    text: '你是否分享过你的 AI 使用经验或工具？',
-    sub: '影响力是 AI 能力的外部延伸',
-    options: [
-      { l:'A', t:'几乎没有', d:'主要自己用，不太分享', score: 1 },
-      { l:'B', t:'偶尔和同事、朋友讲', d:'口头分享，没有公开记录', score: 2 },
-      { l:'C', t:'发过文章、帖子或开源了工具', d:'有一定公开影响力', score: 3 },
-      { l:'D', t:'有稳定的内容输出或社区', d:'持续创作，有固定关注者，成为 AI 工具的「布道者」', score: 4 },
-    ]
-  },
-];
-
-let currentQ = 0;
-
-function renderQuestion(idx) {
-  const q = questions[idx];
-  const pct = ((idx) / questions.length * 100);
-  document.getElementById('quiz-progress').style.width = pct + '%';
-  document.getElementById('quiz-counter').textContent = (idx+1) + ' / ' + questions.length;
-
-  const selected = state.answers[idx];
-  document.getElementById('question-area').innerHTML = `
-    <div class="question-card">
-      <span class="q-tag ${q.tag}">${q.tagText}</span>
-      <div class="q-text">${q.text}</div>
-      <div class="q-sub">${q.sub}</div>
-      <div class="options-grid">
-        ${q.options.map((o,i) => `
-          <div class="option ${selected === i ? 'selected' : ''}" onclick="selectOption(${idx}, ${i})">
-            <div class="option-letter">${o.l}</div>
-            <div class="option-content">
-              <strong>${o.t}</strong>
-              <span>${o.d}</span>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
-
-  document.getElementById('btn-prev').style.display = idx > 0 ? 'flex' : 'none';
-  document.getElementById('btn-next').disabled = selected === undefined;
-  document.getElementById('btn-next').textContent = idx === questions.length - 1 ? '生成我的 AI 简历 🚀' : '下一题 →';
-}
-
-function selectOption(qIdx, optIdx) {
-  state.answers[qIdx] = optIdx;
-  renderQuestion(qIdx);
-}
-
-function nextQ() {
-  if (currentQ < questions.length - 1) {
-    currentQ++;
-    renderQuestion(currentQ);
-    window.scrollTo(0,0);
-  } else {
-    goto('analyzing');
-  }
-}
-
-function prevQ() {
-  if (currentQ > 0) { currentQ--; renderQuestion(currentQ); }
-}
-
-// ═══════════════════════════════════════════════════════
-// ANALYSIS — Claude API
-// ═══════════════════════════════════════════════════════
-function startAnalysis() {
-  const steps = ['as-1','as-2','as-3','as-4','as-5','as-6'];
-  let i = 0;
-  const tick = setInterval(() => {
-    if (i > 0) document.getElementById(steps[i-1])?.classList.replace('active','done');
-    if (i < steps.length) {
-      document.getElementById(steps[i])?.classList.add('active');
-      i++;
-    } else {
-      clearInterval(tick);
-    }
-  }, 700);
-
-  // Compute raw scores
-  const dimRaw = computeScores();
-  state.scores = dimRaw;
-
-  // Try real backend API first
-  const quizArr = questions.map((q,i) => q.options[state.answers[i]??0].score);
-  callAnalyzeAPI(quizArr).then(apiRes => {
-    if (apiRes && apiRes.dims) {
-      state.scores = apiRes.dims;
-      setTimeout(() => {
-        renderResult(apiRes.dims, apiRes.analysis);
-        if (apiRes.projects) renderProjects(apiRes.projects);
-        showGhUser();
-        goto('result');
-      }, 4200);
-    } else { throw new Error('no dims'); }
-  }).catch(() => {
-    // Fallback: client-side scoring
-    callClaudeAnalysis(dimRaw).then(analysis => {
-      state.analysis = analysis;
-      setTimeout(() => {
-        renderResult(dimRaw, analysis);
-        goto('result');
-      }, 4200);
-    });
-  });
-}
-
-function computeScores() {
-  // D2: Q0 (tool freq) + Q1 (ai code %) + Q5 (code review)
-  // D3: Q1 (ai code) + Q5 (code review)
-  // D4: Q2 (prompt) + Q6 (context mgmt)
-  // D5: Q3 (app building)
-  // D1: Q4 (model knowledge)
-  // D6: Q7 (community)
-  const a = questions.map((q, i) => q.options[state.answers[i] ?? 0].score);
-
-  const d1Raw = a[4]; // model knowledge
-  const d2Raw = (a[0] + a[1] + a[5]) / 3; // coding tools
-  const d3Raw = (a[1] + a[5]) / 2; // ai code contrib
-  const d4Raw = (a[2] + a[6]) / 2; // prompt
-  const d5Raw = a[3]; // app building
-  const d6Raw = a[7]; // influence
-
-  const scale = (v, min, max) => Math.round(((v - 1) / 3) * (max - min) + min);
-
-  return {
-    d1: scale(d1Raw, 80, 500),
-    d2: scale(d2Raw, 100, 600),
-    d3: scale(d3Raw, 60, 500),
-    d4: scale(d4Raw, 50, 400),
-    d5: scale(d5Raw, 40, 380),
-    d6: scale(d6Raw, 10, 150),
-  };
-}
-
-async function callClaudeAnalysis(scores) {
-  const aci = Math.round(scores.d1*0.20 + scores.d2*0.25 + scores.d3*0.20 + scores.d4*0.15 + scores.d5*0.15 + scores.d6*0.05);
-  const totalMax = 500*0.20 + 600*0.25 + 500*0.20 + 400*0.15 + 380*0.15 + 150*0.05;
-  const pct = Math.round((aci / totalMax) * 100);
-
-  const answerSummary = questions.map((q, i) => {
-    const opt = q.options[state.answers[i] ?? 0];
-    return `${q.tagText}：${opt.t}`;
-  }).join('；');
-
-  const prompt = `你是 AI Resume 的 AI 能力分析引擎。根据以下用户数据，生成一段专业、真实、有洞察的 AI 能力分析报告。
-
-用户 ACI 总分：${aci} / ${Math.round(totalMax)}（百分位：Top ${100-pct}%）
-六维度评分：
-- D1 模型调用力：${scores.d1}/500
-- D2 编程工具熟练度：${scores.d2}/600  
-- D3 AI 增强代码贡献：${scores.d3}/500
-- D4 Prompt 工程能力：${scores.d4}/400
-- D5 应用构建力：${scores.d5}/380
-- D6 学习与影响力：${scores.d6}/150
-
-用户问卷回答：${answerSummary}
-
-请生成：
-1. 一段 3-4 句的能力总结分析（直接、专业、有具体洞察，不要泛泛而谈）
-2. 一条最重要的提升建议（针对最弱维度，具体可操作）
-
-以 JSON 格式返回，字段：analysis（分析文字）、tip（提升建议）。只返回 JSON，不要 markdown 代码块。`;
+  }, 600);
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/github', {
+      headers: { Authorization: `Bearer ${S.token}` }
+    });
+    clearInterval(tick);
+    ids.forEach(id => document.getElementById(id)?.classList.replace('active','done'));
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
+
+    S.ghData = await res.json();
+    setTimeout(() => { goto('quiz'); renderQ(curQ); }, 400);
+
+  } catch(e) {
+    clearInterval(tick);
+    sessionStorage.removeItem('gh_token');
+    alert('读取 GitHub 数据失败：' + e.message + '\n\n请重新授权。');
+    goto('land');
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// STEP 3: QUIZ
+// ══════════════════════════════════════════════════════
+const QS = [
+  { tag:'tm', tl:'AI 工具使用', dim:'D2',
+    txt:'你最近一个月，使用 AI 编程工具（Claude Code / Cursor / Copilot 等）的频率是？',
+    sub:'选择最符合你实际情况的选项',
+    opts:[{l:'A',t:'几乎不用',d:'偶尔试试，不是工作流的一部分',s:1},{l:'B',t:'每周几次',d:'用于特定任务，比如查文档或写测试',s:2},{l:'C',t:'每天使用',d:'已是日常编程的重要辅助',s:3},{l:'D',t:'几乎全程依赖',d:'大部分代码有 AI 参与，我负责架构和审查',s:4}]},
+  { tag:'tc', tl:'AI 代码贡献', dim:'D3',
+    txt:'上周代码提交中，AI 生成或辅助的代码大概占多少？',
+    sub:'包括你 accept 了 AI 建议、让 AI 起草后修改的代码',
+    opts:[{l:'A',t:'不到 10%',d:'基本自己写，AI 只是偶尔查询',s:1},{l:'B',t:'10%–30%',d:'样板代码和测试让 AI 生成',s:2},{l:'C',t:'30%–60%',d:'功能实现经常和 AI 协作完成',s:3},{l:'D',t:'超过 60%',d:'AI 起草，我负责审查、修改和整合',s:4}]},
+  { tag:'tp', tl:'Prompt 工程', dim:'D4',
+    txt:'当 AI 给出不满意的代码，你通常怎么做？',
+    sub:'选择你最常用的方式',
+    opts:[{l:'A',t:'重新描述一遍问题',d:'换种方式再说一次',s:1},{l:'B',t:'提供更多上下文',d:'贴上相关代码、错误信息或期望输出',s:2},{l:'C',t:'分解成多步骤追问',d:'先确认理解，再一步一步引导',s:3},{l:'D',t:'结构化 prompt 框架',d:'角色+约束+示例，系统化引导',s:4}]},
+  { tag:'ta', tl:'应用构建', dim:'D5',
+    txt:'你是否曾独立用 AI 辅助，从零构建过完整可运行的应用或工具？',
+    sub:'包括个人项目、副业产品、内部工具',
+    opts:[{l:'A',t:'还没有',d:'更多用于学习或日常编程辅助',s:1},{l:'B',t:'构建过脚本或小工具',d:'几十到几百行，解决特定问题',s:2},{l:'C',t:'构建过完整 Web 应用',d:'有前后端、可部署、别人可以用',s:3},{l:'D',t:'构建过多个产品',d:'其中至少一个有真实用户',s:4}]},
+  { tag:'tm', tl:'模型认知', dim:'D1',
+    txt:'面对同一个任务，你如何选择 AI 工具或模型？',
+    sub:'考验你对不同 AI 工具能力边界的认知',
+    opts:[{l:'A',t:'用习惯哪个就用哪个',d:'基本用一个固定的工具',s:1},{l:'B',t:'根据任务类型粗略选择',d:'代码用 Cursor，写作用 Claude',s:2},{l:'C',t:'对比不同模型的输出',d:'同一问题问多个模型，取最好的',s:3},{l:'D',t:'有系统性选择策略',d:'了解各模型 context、推理能力、成本',s:4}]},
+  { tag:'tc', tl:'代码质量', dim:'D3',
+    txt:'当你接受 AI 生成的代码时，通常会做什么？',
+    sub:'你的 review 习惯直接影响 AI 代码的最终质量',
+    opts:[{l:'A',t:'直接用，测试能跑就行',d:'主要看功能是否符合预期',s:1},{l:'B',t:'读一遍，理解逻辑',d:'确保自己能看懂，会改错误',s:2},{l:'C',t:'系统性 review',d:'关注命名、边界情况、性能',s:3},{l:'D',t:'深度重构',d:'与代码库风格一致，完整 review 后 commit',s:4}]},
+  { tag:'tp', tl:'上下文管理', dim:'D4',
+    txt:'你如何管理和复用你的 Prompt 经验？',
+    sub:'好的 Prompt 知识管理是高阶 AI 使用者的标志',
+    opts:[{l:'A',t:'每次现想现写',d:'没有专门整理，用完就算',s:1},{l:'B',t:'笔记保存好用的 prompt',d:'有时候会复制过来用',s:2},{l:'C',t:'有自己的 prompt 库',d:'按场景分类，随时调用',s:3},{l:'D',t:'Claude Projects / System Prompt 工程',d:'有专属工作区、持久化上下文',s:4}]},
+  { tag:'ta', tl:'社区影响力', dim:'D6',
+    txt:'你是否分享过你的 AI 使用经验或工具？',
+    sub:'影响力是 AI 能力的外部延伸',
+    opts:[{l:'A',t:'几乎没有',d:'主要自己用，不太分享',s:1},{l:'B',t:'偶尔和同事讲',d:'口头分享，没有公开记录',s:2},{l:'C',t:'发过文章或开源了工具',d:'有一定公开影响力',s:3},{l:'D',t:'稳定的内容输出或社区',d:'持续创作，有固定关注者',s:4}]},
+];
+
+let curQ = 0;
+function renderQ(i) {
+  const q = QS[i];
+  document.getElementById('qprog').style.width = (i / QS.length * 100) + '%';
+  document.getElementById('qctr').textContent = (i+1) + ' / ' + QS.length;
+  const sel = S.answers[i];
+  document.getElementById('qarea').innerHTML = `<div class="qcard">
+    <span class="qtag ${q.tag}">${q.tl}</span>
+    <div class="qtxt">${q.txt}</div>
+    <div class="qsub">${q.sub}</div>
+    <div class="opts">${q.opts.map((o,j)=>`
+      <div class="opt ${sel===j?'sel':''}" onclick="selOpt(${i},${j})">
+        <div class="ol">${o.l}</div>
+        <div class="oc"><strong>${o.t}</strong><span>${o.d}</span></div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+  document.getElementById('btn-prev').style.display = i > 0 ? 'flex' : 'none';
+  document.getElementById('btn-next').disabled = sel === undefined;
+  document.getElementById('btn-next').textContent = i === QS.length-1 ? '生成我的 AI 简历 🚀' : '下一题 →';
+}
+function selOpt(qi, oi) { S.answers[qi] = oi; renderQ(qi); }
+function nextQ() {
+  if (curQ < QS.length-1) { curQ++; renderQ(curQ); window.scrollTo(0,0); }
+  else { goto('analyzing'); runAnalysis(); }
+}
+function prevQ() { if(curQ>0){ curQ--; renderQ(curQ); } }
+
+// ══════════════════════════════════════════════════════
+// STEP 4: CALL BACKEND /api/analyze (DeepSeek)
+// ══════════════════════════════════════════════════════
+async function runAnalysis() {
+  const ids = ['as1','as2','as3','as4','as5'];
+  let i = 0;
+  const tick = setInterval(() => {
+    if (i > 0) document.getElementById(ids[i-1])?.classList.replace('active','done');
+    if (i < ids.length) document.getElementById(ids[i])?.classList.add('active');
+    i++;
+  }, 1200);
+
+  // 把问卷答案整理成后端需要的格式（每题的选项分值 1-4）
+  const quizAnswers = QS.map((q, idx) => q.opts[S.answers[idx] ?? 0].s);
+
+  try {
+    const res = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+        githubData: S.ghData,
+        quizAnswers,
+      }),
     });
+
+    clearInterval(tick);
+    ids.forEach(id => document.getElementById(id)?.classList.replace('active','done'));
+
     const data = await res.json();
-    const text = data.content[0].text.trim();
-    return JSON.parse(text);
+
+    if (!res.ok || data.error) {
+      const errEl = document.getElementById('err-analyze');
+      errEl.textContent = '⚠ ' + (data.error || '分析接口返回错误，请检查 Vercel 环境变量');
+      errEl.style.display = 'block';
+      // 如果有评分数据也展示出来（DeepSeek 报错但评分仍可用）
+      if (data.dims && data.aci) {
+        setTimeout(() => { renderResult({ ...data, projects:[], analysis:'AI 分析暂时不可用，请检查 DEEPSEEK_API_KEY 环境变量是否正确配置。', tip:'配置正确后重新测试即可获得 DeepSeek 个性化分析。' }); goto('result'); }, 2000);
+      }
+      return;
+    }
+
+    setTimeout(() => { renderResult(data); goto('result'); }, 400);
+
   } catch(e) {
-    // Fallback
-    return {
-      analysis: `你的 AI 能力总分 ${aci} 分，展现出较强的 AI 工具实战经验。在编程工具熟练度（D2）方面表现突出，说明你已将 AI 深度融入日常开发工作流。Prompt 工程能力有进一步提升空间——系统化的 prompt 策略将直接提升你与 AI 协作的效率上限。`,
-      tip: `聚焦提升：建立你的 Prompt 模板库。从最常用的 3 个开发场景入手，为每个场景设计一套标准化 prompt 框架，下周开始就能感受到效率差异。`
-    };
+    clearInterval(tick);
+    const errEl = document.getElementById('err-analyze');
+    errEl.textContent = '⚠ 网络错误：' + e.message;
+    errEl.style.display = 'block';
   }
 }
 
-// ═══════════════════════════════════════════════════════
-// RESULT RENDERING
-// ═══════════════════════════════════════════════════════
-const dimConfig = [
-  { key:'d1', name:'模型调用力', icon:'🤖', weight:'20%', max:500, color:'#00D4A8' },
-  { key:'d2', name:'编程工具熟练度', icon:'💻', weight:'25%', max:600, color:'#00D4A8' },
-  { key:'d3', name:'AI 增强代码贡献', icon:'🔧', weight:'20%', max:500, color:'#FFB347' },
-  { key:'d4', name:'Prompt 工程能力', icon:'✍️', weight:'15%', max:400, color:'#6495ED' },
-  { key:'d5', name:'应用构建力', icon:'🚀', weight:'15%', max:380, color:'#FF4D8D' },
-  { key:'d6', name:'学习 & 影响力', icon:'🌐', weight:'5%',  max:150, color:'#9B8FF0' },
+// ══════════════════════════════════════════════════════
+// STEP 5: RENDER RESULT
+// ══════════════════════════════════════════════════════
+const DC = [
+  {k:'d1',n:'模型调用力',i:'🤖',w:'20%',max:500,c:'#00D4A8'},
+  {k:'d2',n:'编程工具熟练度',i:'💻',w:'25%',max:600,c:'#00D4A8'},
+  {k:'d3',n:'AI 增强代码贡献',i:'🔧',w:'20%',max:500,c:'#FFB347'},
+  {k:'d4',n:'Prompt 工程能力',i:'✍️',w:'15%',max:400,c:'#6495ED'},
+  {k:'d5',n:'应用构建力',i:'🚀',w:'15%',max:380,c:'#FF4D8D'},
+  {k:'d6',n:'学习 & 影响力',i:'🌐',w:'5%',max:150,c:'#9B8FF0'},
 ];
-
-const levelMap = [
-  { min:0,   max:200,  label:'AI Beginner',    l:'L1', emoji:'🌱' },
-  { min:200, max:500,  label:'AI User',         l:'L2', emoji:'⚡' },
-  { min:500, max:1000, label:'AI Practitioner', l:'L3', emoji:'🔥' },
-  { min:1000,max:2000, label:'AI Builder',      l:'L4', emoji:'🚀' },
-  { min:2000,max:9999, label:'AI Architect',    l:'L5', emoji:'🏆' },
+const LEVELS = [
+  {min:0,max:200,l:'AI Beginner',n:'L1',e:'🌱'},
+  {min:200,max:500,l:'AI User',n:'L2',e:'⚡'},
+  {min:500,max:1000,l:'AI Practitioner',n:'L3',e:'🔥'},
+  {min:1000,max:2000,l:'AI Builder',n:'L4',e:'🚀'},
+  {min:2000,max:9999,l:'AI Architect',n:'L5',e:'🏆'},
 ];
+const getLevel = s => LEVELS.find(l=>s>=l.min&&s<l.max)||LEVELS[0];
 
-function getLevel(score) {
-  return levelMap.find(l => score >= l.min && score < l.max) || levelMap[0];
-}
-
-function renderResult(scores, analysis) {
-  const weights = { d1:.20, d2:.25, d3:.20, d4:.15, d5:.15, d6:.05 };
-  const aci = Math.round(Object.keys(scores).reduce((s,k) => s + scores[k]*weights[k], 0));
-  const totalMax = dimConfig.reduce((s,d) => s + d.max*(weights[d.key]||0), 0);
-  const pct = Math.round((aci / totalMax) * 100);
-  const top = 100 - pct;
+function renderResult(data) {
+  const { dims, aci, projects, analysis, tip } = data;
+  const gh = S.ghData;
+  const maxAci = DC.reduce((s,d)=>s+d.max*parseFloat(d.w)/100,0); // ~476
+  const pct = Math.min(99, Math.round(aci / 2530 * 100));
+  const top = Math.max(1, 100 - pct);
   const lv = getLevel(aci);
 
+  // Profile
+  if (gh) {
+    document.getElementById('r-av').src = gh.user.avatar_url;
+    document.getElementById('r-nm').textContent = gh.user.name;
+    document.getElementById('r-mt').textContent = `${gh.repos.length} 个仓库 · ${gh.user.followers} 粉丝 · ${gh.stats.totalStars} Stars`;
+    document.getElementById('r-gh').href = gh.user.html_url;
+    document.getElementById('share-url').textContent = `airesume.dev/@${gh.user.login}`;
+  }
+
+  // Score
   document.getElementById('r-score').textContent = aci.toLocaleString();
-  document.getElementById('r-level').innerHTML = `${lv.emoji} ${lv.label} · ${lv.l}`;
-  document.getElementById('r-desc').textContent = `综合六个维度的 AI 使用能力评估。基于你的 GitHub 数据和行为问卷计算得出。`;
-  document.getElementById('r-pct-bar').style.width = pct + '%';
-  document.getElementById('r-pct-text').textContent = `Top ${top}%`;
+  document.getElementById('r-level').innerHTML = `${lv.e} ${lv.l} · ${lv.n}`;
+  document.getElementById('r-pbar').style.width = pct + '%';
+  document.getElementById('r-ptxt').textContent = `Top ${top}%`;
 
-  // Badge
-  document.getElementById('badge-right').textContent = `ACI ${aci.toLocaleString()} · ${lv.l} ${lv.label}`;
-  document.getElementById('badge-right').style.background = aci > 1000 ? '#00C9A7' : aci > 500 ? '#6495ED' : '#FFB347';
-  document.getElementById('badge-code').textContent = `[![AI Resume](https://img.shields.io/badge/AI%20Resume-ACI%20${aci}%20·%20${lv.l}%20${lv.label.replace(/ /g,'%20')}-00D4A8?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0tMiAxNWwtNS01IDEuNDEtMS40MUwxMCAxNC4xN2w3LjU5LTcuNTlMMTkgOGwtOSA5eiIvPjwvc3ZnPg==)](https://airesume.dev/@you)`;
-
-  // Dims grid
-  document.getElementById('dims-grid').innerHTML = dimConfig.map(d => {
-    const val = scores[d.key];
-    const pctBar = Math.round((val / d.max) * 100);
-    return `<div class="dim-card">
-      <div class="dim-header">
-        <span class="dim-icon">${d.icon}</span>
-        <span class="dim-name">${d.name}</span>
-        <span class="dim-weight">${d.weight}</span>
-      </div>
-      <div class="dim-bar-track">
-        <div class="dim-bar-fill" style="width:${pctBar}%;background:${d.color}"></div>
-      </div>
-      <div class="dim-score-row">
-        <span class="dim-score">${val} / ${d.max}</span>
-        <span class="dim-sub">${pctBar >= 70 ? '🔥 优秀' : pctBar >= 40 ? '⚡ 良好' : '🌱 待提升'}</span>
-      </div>
+  // Dims
+  document.getElementById('dims').innerHTML = DC.map(d => {
+    const v = dims[d.k]||0, p = Math.round(v/d.max*100);
+    return `<div class="dcard">
+      <div class="dhdr"><span style="font-size:18px">${d.i}</span><span style="font-size:12px;font-weight:600">${d.n}</span><span class="dw">${d.w}</span></div>
+      <div class="db"><div class="dbf" style="width:${p}%;background:${d.c}"></div></div>
+      <div class="drow"><span class="dsc">${v} / ${d.max}</span><span class="dsub">${p>=70?'🔥 优秀':p>=40?'⚡ 良好':'🌱 待提升'}</span></div>
     </div>`;
   }).join('');
 
-  // Analysis
-  if (analysis) {
-    document.getElementById('r-analysis').textContent = analysis.analysis;
-    document.getElementById('r-tip').textContent = analysis.tip;
+  // Projects
+  if (projects && projects.length > 0) {
+    document.getElementById('projects').innerHTML = projects.map(p => {
+      const sc = p.aiScore || 0;
+      const col = sc > 60 ? '#00D4A8' : sc > 30 ? '#FFB347' : '#6495ED';
+      return `<div class="pj">
+        <div>
+          <div class="pjn">${p.name}</div>
+          <div class="pjd">${p.description || ''}</div>
+          <div class="tags">
+            ${(p.aiKeywords||[]).map(t=>`<span class="tag tag-ai">${t}</span>`).join('')}
+            ${p.language?`<span class="tag tag-lang">${p.language}</span>`:''}
+          </div>
+          <div class="pjh">${p.highlight || ''}</div>
+        </div>
+        <div class="aiscore">
+          <svg width="56" height="56" viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
+            <circle cx="28" cy="28" r="22" fill="none" stroke="${col}" stroke-width="5"
+              stroke-dasharray="${(2*Math.PI*22*sc/100).toFixed(1)} ${(2*Math.PI*22).toFixed(1)}"
+              stroke-linecap="round" transform="rotate(-90 28 28)"/>
+          </svg>
+          <div class="aipct" style="color:${col}">${sc}%</div>
+          <div class="aipct-l">AI 贡献</div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    document.getElementById('projects').innerHTML = `<div style="color:var(--muted);font-size:14px;padding:20px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:14px;">暂未检测到明显的 AI 相关项目。试着把你用 AI 构建的工具开源到 GitHub！</div>`;
   }
+
+  // Analysis
+  document.getElementById('r-analysis').textContent = analysis || '—';
+  document.getElementById('r-tip').textContent = tip || '—';
+
+  // Badge
+  const login = gh?.user?.login || 'you';
+  const bc = aci>1000?'00C9A7':aci>500?'6495ED':'FFB347';
+  document.getElementById('badge-r').textContent = `ACI ${aci} · ${lv.n} ${lv.l}`;
+  document.getElementById('badge-r').style.background = '#' + bc;
+  document.getElementById('bcode').innerHTML = `[![AI Resume](https://img.shields.io/badge/AI%20Resume-ACI%20${aci}%20%C2%B7%20${lv.n}%20${encodeURIComponent(lv.l)}-${bc}?style=flat)](https://airesume.dev/@${login})<button class="cbtn" onclick="copyBadge()">复制</button>`;
 
   // Radar
-  drawRadar(scores);
+  drawRadar(dims);
 }
 
-function loadDemoResult() {
-  const demoScores = { d1:380, d2:520, d3:420, d4:310, d5:290, d6:95 };
-  const demoAnalysis = {
-    analysis: '你的 AI 能力展现出强烈的「工程师型 AI 使用者」特征——编程工具熟练度（D2）是最突出的维度，说明你已将 AI 深度整合进日常开发工作流，而非停留在表层使用。AI 增强代码贡献（D3）得分优秀，意味着你的 AI 辅助编码质量高、审查严谨。相比之下，应用构建力（D5）和社区影响力（D6）有较大提升空间——你的 AI 能力目前主要服务于个人效率，尚未转化为产品或社区价值。',
-    tip: '最具杠杆的一步：把你最常用的 AI 工作流公开分享一次。发一条推文、写一篇掘金文章，或开源一个你用 AI 构建的小工具。这一步能同时提升 D5 和 D6，且往往会带来你意想不到的反馈和连接。'
-  };
-  state.scores = demoScores;
-  state.analysis = demoAnalysis;
-  renderResult(demoScores, demoAnalysis);
-}
-
-// ═══════════════════════════════════════════════════════
-// RADAR CHART
-// ═══════════════════════════════════════════════════════
-function drawRadar(scores) {
-  const canvas = document.getElementById('radarCanvas');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  const cx = W/2, cy = H/2, r = Math.min(W,H)/2 - 32;
-  const n = 6;
-  const labels = ['模型调用', '编程工具', 'AI 代码', 'Prompt', '应用构建', '影响力'];
-  const maxVals = [500, 600, 500, 400, 380, 150];
-  const vals = [scores.d1, scores.d2, scores.d3, scores.d4, scores.d5, scores.d6];
-  const colors = ['#00D4A8','#00D4A8','#FFB347','#6495ED','#FF4D8D','#9B8FF0'];
-  const ang = i => (Math.PI * 2 * i / n) - Math.PI/2;
-
+function drawRadar(dims) {
+  const cv = document.getElementById('radar');
+  const ctx = cv.getContext('2d');
+  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=Math.min(W,H)/2-28,n=6;
+  const labels=['模型调用','编程工具','AI代码','Prompt','应用构建','影响力'];
+  const maxV=[500,600,500,400,380,150];
+  const vals=[dims.d1||0,dims.d2||0,dims.d3||0,dims.d4||0,dims.d5||0,dims.d6||0];
+  const colors=['#00D4A8','#00D4A8','#FFB347','#6495ED','#FF4D8D','#9B8FF0'];
+  const ang=i=>(Math.PI*2*i/n)-Math.PI/2;
   ctx.clearRect(0,0,W,H);
-
-  // Grid
-  for (let lvl = 1; lvl <= 4; lvl++) {
-    ctx.beginPath();
-    for (let i = 0; i < n; i++) {
-      const a = ang(i), rr = r * lvl / 4;
-      const x = cx + rr * Math.cos(a), y = cy + rr * Math.sin(a);
-      i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-    }
-    ctx.closePath();
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-    ctx.lineWidth = 1; ctx.stroke();
-  }
-
-  // Spokes
-  for (let i = 0; i < n; i++) {
-    const a = ang(i);
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + r*Math.cos(a), cy + r*Math.sin(a));
-    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-    ctx.lineWidth = 1; ctx.stroke();
-  }
-
-  // Data polygon
-  ctx.beginPath();
-  for (let i = 0; i < n; i++) {
-    const a = ang(i);
-    const rr = r * (vals[i] / maxVals[i]);
-    const x = cx + rr*Math.cos(a), y = cy + rr*Math.sin(a);
-    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
-  }
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(0,212,168,0.15)';
-  ctx.fill();
-  ctx.strokeStyle = '#00D4A8';
-  ctx.lineWidth = 2; ctx.stroke();
-
-  // Dots
-  for (let i = 0; i < n; i++) {
-    const a = ang(i);
-    const rr = r * (vals[i] / maxVals[i]);
-    const x = cx + rr*Math.cos(a), y = cy + rr*Math.sin(a);
-    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI*2);
-    ctx.fillStyle = colors[i]; ctx.fill();
-  }
-
-  // Labels
-  ctx.font = '11px Inter, sans-serif';
-  ctx.fillStyle = 'rgba(240,248,255,0.5)';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  for (let i = 0; i < n; i++) {
-    const a = ang(i);
-    const lx = cx + (r+18)*Math.cos(a), ly = cy + (r+18)*Math.sin(a);
-    ctx.fillText(labels[i], lx, ly);
-  }
+  for(let l=1;l<=4;l++){ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*l/4;i===0?ctx.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):ctx.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}ctx.closePath();ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.stroke();}
+  for(let i=0;i<n;i++){const a=ang(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.stroke();}
+  ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*(vals[i]/maxV[i]);i===0?ctx.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):ctx.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}
+  ctx.closePath();ctx.fillStyle='rgba(0,212,168,.14)';ctx.fill();ctx.strokeStyle='#00D4A8';ctx.lineWidth=2;ctx.stroke();
+  for(let i=0;i<n;i++){const a=ang(i),rr=r*(vals[i]/maxV[i]);ctx.beginPath();ctx.arc(cx+rr*Math.cos(a),cy+rr*Math.sin(a),4,0,Math.PI*2);ctx.fillStyle=colors[i];ctx.fill();}
+  ctx.font='10px Inter,sans-serif';ctx.fillStyle='rgba(240,248,255,.45)';ctx.textAlign='center';ctx.textBaseline='middle';
+  for(let i=0;i<n;i++){const a=ang(i);ctx.fillText(labels[i],cx+(r+16)*Math.cos(a),cy+(r+16)*Math.sin(a));}
 }
 
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // UTILS
-// ═══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function copyBadge() {
-  const text = document.getElementById('badge-code').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = event.target;
-    btn.textContent = '✅ 已复制';
-    setTimeout(() => btn.textContent = '复制', 2000);
+  const t = document.getElementById('bcode').childNodes[0]?.textContent||'';
+  navigator.clipboard.writeText(t.trim()).then(()=>{
+    const b=document.querySelector('.cbtn');b.textContent='✅ 已复制';
+    setTimeout(()=>b.textContent='复制',2000);
   });
 }
-
 function copyLink() {
-  navigator.clipboard.writeText('https://airesume.dev/@you').then(() => {
-    event.target.textContent = '✅ 已复制';
-    setTimeout(() => event.target.textContent = '🔗 复制链接', 2000);
+  const login = S.ghData?.user?.login||'you';
+  navigator.clipboard.writeText(`https://airesume.dev/@${login}`).then(()=>{
+    const b=event.target;b.textContent='✅ 已复制';setTimeout(()=>b.textContent='🔗 复制链接',2000);
   });
 }
-
-function shareResult() {
-  const aci = document.getElementById('r-score').textContent;
-  const text = `我在 AI Resume 测出了 ACI ${aci} 分！\n查看我的 AI 能力简历：https://airesume.dev/@you\n\n#AIResume #VibeCoding #AIEngineer`;
-  if (navigator.share) {
-    navigator.share({ title:'我的 AI 能力简历', text, url:'https://airesume.dev/@you' });
-  } else {
-    navigator.clipboard.writeText(text).then(() => alert('分享文案已复制！\n\n' + text));
-  }
+function share() {
+  const aci = document.getElementById('r-score')?.textContent||'—';
+  const login = S.ghData?.user?.login||'you';
+  const text = `我在 AI Resume 测出了 ACI ${aci} 分！\n查看我的 AI 能力简历：https://airesume.dev/@${login}\n#AIResume #VibeCoding`;
+  if (navigator.share) navigator.share({title:'我的 AI 能力简历',text,url:`https://airesume.dev/@${login}`});
+  else navigator.clipboard.writeText(text).then(()=>alert('分享文案已复制！\n\n'+text));
 }
-
-// ══════════════════════════════════════════════
-// REAL GITHUB OAUTH + DATA
-// ══════════════════════════════════════════════
-const GH_CLIENT_ID = 'Ov23liLyNYTpMt8fL9ns';
-
-// On load: pick up token from OAuth redirect
-window.addEventListener('load', () => {
-  const hash = location.hash;
-  if (hash.includes('gh_token=')) {
-    const tok = hash.split('gh_token=')[1].split('&')[0];
-    sessionStorage.setItem('gh_tok', tok);
-    history.replaceState(null,'','/');
-    doGhLoad(tok);
-    return;
-  }
-  if (location.search.includes('error=')) {
-    const e = new URLSearchParams(location.search).get('error');
-    alert('GitHub 授权失败: ' + e);
-    history.replaceState(null,'','/');
-  }
-});
-
-function startOAuth() {
-  const cb = encodeURIComponent(location.origin + '/api/auth/callback');
-  location.href = 'https://github.com/login/oauth/authorize'
-    + '?client_id=' + GH_CLIENT_ID
-    + '&redirect_uri=' + cb
-    + '&scope=read:user%20public_repo';
-}
-
-async function doGhLoad(tok) {
-  // Show GitHub screen in loading mode
-  document.getElementById('gh-connect-btn-area') && (document.getElementById('gh-connect-btn-area').style.display='none');
-  document.getElementById('gh-loading').style.display='block';
-  document.getElementById('screen-landing').classList.remove('active');
-  document.getElementById('screen-github').classList.add('active');
-
-  const msgs=['连接 GitHub API...','读取仓库列表...','分析语言分布...','识别 AI 项目...','读取 README...','完成!'];
-  let mi=0;
-  const prog=document.getElementById('gh-progress');
-  const stat=document.getElementById('gh-status');
-  const t=setInterval(()=>{
-    if(stat) stat.textContent=msgs[mi]||msgs[msgs.length-1];
-    if(prog) prog.style.width=((mi+1)/msgs.length*100)+'%';
-    mi++;
-    if(mi>=msgs.length) clearInterval(t);
-  },500);
-
-  try {
-    const r=await fetch('/api/github',{headers:{Authorization:'Bearer '+tok}});
-    if(!r.ok) throw new Error('api error');
-    const d=await r.json();
-    clearInterval(t);
-    window._ghData=d;
-    sessionStorage.setItem('gh_data',JSON.stringify(d));
-    setTimeout(()=>goto('quiz'),400);
-  } catch(e) {
-    clearInterval(t);
-    alert('读取 GitHub 数据失败，请重试');
-    goto('landing');
-  }
-}
-
-async function callAnalyzeAPI(quizArr) {
-  const gh=window._ghData||JSON.parse(sessionStorage.getItem('gh_data')||'null');
-  const r=await fetch('/api/analyze',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({githubData:gh,quizAnswers:quizArr})
-  });
-  return r.json();
-}
-
-// Project rendering (real data)
-const LANGC={Python:'#3572A5',JavaScript:'#f1e05a',TypeScript:'#3178c6',Go:'#00ADD8',Rust:'#dea584',Java:'#b07219','Jupyter Notebook':'#DA5B0B',Shell:'#89e051',CSS:'#563d7c',HTML:'#e34c26'};
-
-function renderProjects(projs) {
-  let el=document.getElementById('ai-projects-section');
-  if(!el){
-    el=document.createElement('div');
-    el.id='ai-projects-section';
-    el.style.marginBottom='32px';
-    const ra=document.querySelector('.analysis-card');
-    if(ra) ra.before(el);
-  }
-  if(!projs||!projs.length){
-    el.innerHTML='<div style="color:var(--muted);font-size:14px;padding:24px;text-align:center">暂未识别到 AI 相关项目，为仓库添加 AI 相关 topics 可帮助识别</div>';
-    return;
-  }
-  const cards=projs.map(p=>{
-    const tier=p.aiScore>=70?'border-color:var(--teal)':p.aiScore>=35?'border-color:var(--warn)':'';
-    const sc=p.aiScore>=70?'color:var(--teal)':p.aiScore>=35?'color:var(--warn)':'color:var(--muted)';
-    const lc=LANGC[p.language]||'#888';
-    const kws=(p.aiKeywords||[]).slice(0,3).map(k=>`<span style="background:rgba(0,212,168,.1);border:1px solid rgba(0,212,168,.2);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--teal);font-family:var(--font-mono)">${k}</span>`).join(' ');
-    return `<div style="background:var(--card);border:1px solid var(--border);${tier};border-radius:14px;padding:18px;margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px">
-        <div style="font-family:var(--font-display);font-weight:700;font-size:15px">${p.name}</div>
-        <span style="font-family:var(--font-mono);font-size:11px;${sc};flex-shrink:0">AI ${p.aiScore}</span>
-      </div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:8px;line-height:1.6">${p.description||'暂无描述'}</div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted)">
-        ${p.language?`<span><span style="width:8px;height:8px;border-radius:50%;background:${lc};display:inline-block;margin-right:4px"></span>${p.language}</span>`:''}
-        ${p.stars>0?`<span>⭐ ${p.stars}</span>`:''}
-        ${kws}
-      </div>
-      ${p.highlight?`<div style="margin-top:10px;padding:8px 12px;background:rgba(0,212,168,.06);border-left:3px solid var(--teal);border-radius:6px;font-size:12px;color:rgba(240,248,255,.7);line-height:1.6">${p.highlight}</div>`:''}
-    </div>`;
-  });
-
-  el.innerHTML=`
-    <div style="font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:12px">
-      🤖 AI 代表项目
-      <span style="flex:1;height:1px;background:var(--border)"></span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">${cards.join('')}</div>
-  `;
-}
-
-function showGhUser() {
-  const d=window._ghData||JSON.parse(sessionStorage.getItem('gh_data')||'null');
-  if(!d||!d.user) return;
-  const u=d.user;
-  if(document.getElementById('gh-user-bar')) return;
-  const bar=document.createElement('div');
-  bar.id='gh-user-bar';
-  bar.style.cssText='display:flex;align-items:center;gap:14px;margin-bottom:24px;padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:14px';
-  bar.innerHTML=`
-    ${u.avatar_url?`<img src="${u.avatar_url}" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--teal)">`:''}
-    <div style="flex:1">
-      <div style="font-family:var(--font-display);font-weight:700;font-size:17px">${u.name||u.login}</div>
-      <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">@${u.login} · ${u.public_repos} repos</div>
-    </div>
-    <div style="font-family:var(--font-mono);font-size:11px;color:var(--teal)">airesume.dev/@${u.login}</div>
-  `;
-  const rh=document.querySelector('.result-hero');
-  if(rh) rh.before(bar);
-}
-
 </script>
 </body>
 </html>
