@@ -2,65 +2,57 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Resume — 测试你的 AI 能力等级</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI Resume — AI 能力量化平台</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
-:root{
-  --navy:#0A1628;--navy2:#0F1E35;--teal:#00D4A8;--teal2:#00A882;
-  --pink:#FF4D8D;--warn:#FFB347;--white:#F0F8FF;--muted:#5A7A96;
-  --card:#111F33;--border:#1E3A55;
-  --fd:'Syne',sans-serif;--fm:'Space Mono',monospace;--fb:'Inter',sans-serif;
-}
+:root{--navy:#0A1628;--navy2:#0F1E35;--teal:#00D4A8;--teal2:#00A882;--pink:#FF4D8D;--warn:#FFB347;--white:#F0F8FF;--muted:#5A7A96;--card:#111F33;--border:#1E3A55;--fd:'Syne',sans-serif;--fm:'Space Mono',monospace;--fb:'Inter',sans-serif;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--navy);color:var(--white);font-family:var(--fb);min-height:100vh;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;opacity:.3;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+body::before{content:'';position:fixed;inset:0;opacity:.3;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
 .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;}
 .o1{width:500px;height:500px;background:rgba(0,212,168,.07);top:-120px;right:-120px;}
 .o2{width:400px;height:400px;background:rgba(255,77,141,.05);bottom:-80px;left:-80px;}
 .screen{position:relative;z-index:1;display:none;}
 .screen.active{display:flex;flex-direction:column;min-height:100vh;}
-/* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid rgba(255,255,255,.05);}
 @media(max-width:600px){nav{padding:14px 16px;}}
 .logo{font-family:var(--fd);font-size:20px;font-weight:800;letter-spacing:-.5px;}
 .logo span{color:var(--teal);}
 .pill{background:rgba(0,212,168,.1);border:1px solid rgba(0,212,168,.25);padding:4px 14px;border-radius:20px;font-size:11px;color:var(--teal);font-family:var(--fm);letter-spacing:1px;}
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:8px;border:none;font-family:var(--fd);font-weight:700;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap;}
 .btn-p{background:var(--teal);color:var(--navy);}
 .btn-p:hover{background:var(--teal2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,212,168,.28);}
 .btn-g{background:transparent;color:var(--white);border:1px solid var(--border);}
 .btn-g:hover{border-color:var(--teal);color:var(--teal);}
+.btn-pink{background:var(--pink);color:white;}
+.btn-pink:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,77,141,.3);}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-/* ERROR BANNER */
-.err{background:rgba(255,77,141,.08);border:1px solid rgba(255,77,141,.3);border-radius:10px;padding:14px 18px;font-size:13px;color:#ff8ab3;margin:0 0 20px;display:none;}
 
-/* ══ LANDING ══ */
+/* LANDING */
 #s-land main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;}
 .eyebrow{font-family:var(--fm);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:22px;display:inline-flex;align-items:center;gap:10px;}
 .eyebrow::before,.eyebrow::after{content:'';width:28px;height:1px;background:var(--teal);opacity:.5;}
 h1{font-family:var(--fd);font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1.05;letter-spacing:-2px;max-width:780px;margin:0 auto 22px;}
 h1 em{color:var(--teal);font-style:normal;}
-.sub{font-size:17px;color:rgba(240,248,255,.6);line-height:1.75;max-width:500px;margin:0 auto 44px;}
+.sub{font-size:17px;color:rgba(240,248,255,.6);line-height:1.75;max-width:520px;margin:0 auto 44px;}
 .stats{display:flex;gap:44px;justify-content:center;flex-wrap:wrap;margin-top:64px;padding-top:44px;border-top:1px solid rgba(255,255,255,.06);}
 .sn{font-family:var(--fd);font-size:30px;font-weight:800;color:var(--teal);}
 .sl{font-size:12px;color:var(--muted);margin-top:4px;}
 
-/* ══ LOADING ══ */
+/* LOADING */
 #s-loading main,#s-analyzing main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;}
 .spin{width:80px;height:80px;border-radius:50%;border:3px solid rgba(255,255,255,.06);border-top-color:var(--teal);animation:spin 1s linear infinite;margin:0 auto 28px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.steps{margin-top:28px;max-width:340px;}
+.steps{margin-top:28px;max-width:360px;}
 .step{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:14px;color:var(--muted);transition:color .3s;}
-.step.done{color:var(--teal);} .step.active{color:var(--white);}
+.step.done{color:var(--teal);}.step.active{color:var(--white);}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s;}
 .step.done .dot{background:var(--teal);}
 .step.active .dot{background:var(--white);animation:pulse 1s ease infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ══ QUIZ ══ */
+/* QUIZ */
 #s-quiz{padding:0;}
 .qwrap{max-width:680px;margin:0 auto;padding:36px 20px 80px;}
 .ph{display:flex;align-items:center;gap:14px;margin-bottom:36px;}
@@ -86,7 +78,60 @@ h1 em{color:var(--teal);font-style:normal;}
 .oc span{font-size:12px;color:var(--muted);line-height:1.5;}
 .qnav{display:flex;justify-content:space-between;align-items:center;}
 
-/* ══ RESULT ══ */
+/* PORTFOLIO SCREEN */
+#s-vibe{padding:0;}
+.vwrap{max-width:720px;margin:0 auto;padding:36px 20px 80px;}
+.vh{text-align:center;margin-bottom:32px;}
+.vh h2{font-family:var(--fd);font-size:26px;font-weight:700;margin-bottom:10px;}
+.vh p{font-size:14px;color:var(--muted);line-height:1.7;max-width:500px;margin:0 auto;}
+.pf-types{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;justify-content:center;}
+.pf-type-btn{background:var(--navy2);border:1.5px solid var(--border);border-radius:10px;padding:10px 18px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .18s;font-family:var(--fd);font-weight:600;}
+.pf-type-btn:hover,.pf-type-btn.active{border-color:var(--teal);color:var(--teal);background:rgba(0,212,168,.06);}
+.pf-list{display:flex;flex-direction:column;gap:14px;margin-bottom:20px;}
+/* Portfolio card */
+.pf-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.pf-card-header{padding:18px 20px;display:flex;align-items:flex-start;gap:14px;}
+.pf-thumb{width:64px;height:64px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--navy2);}
+.pf-thumb-placeholder{width:64px;height:64px;border-radius:10px;background:var(--navy2);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.pf-card-info{flex:1;min-width:0;}
+.pf-card-name{font-family:var(--fd);font-size:14px;font-weight:700;margin-bottom:3px;}
+.pf-card-meta{font-size:12px;color:var(--muted);}
+.pf-card-del{background:rgba(255,77,141,.1);border:1px solid rgba(255,77,141,.2);color:var(--pink);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pf-card-del:hover{background:rgba(255,77,141,.2);}
+/* Analysis result inside card */
+.pf-analysis{border-top:1px solid var(--border);padding:16px 20px;background:rgba(0,212,168,.03);}
+.pf-analysis-loading{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.pf-ai-score{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.pf-score-num{font-family:var(--fd);font-size:28px;font-weight:800;color:var(--teal);}
+.pf-score-bar{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:6px;overflow:hidden;}
+.pf-score-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--teal),var(--pink));}
+.pf-summary{font-size:13px;color:rgba(240,248,255,.8);line-height:1.7;margin-bottom:10px;}
+.pf-tags-row{display:flex;flex-wrap:wrap;gap:6px;}
+.pf-tag{padding:3px 9px;border-radius:5px;font-size:11px;font-family:var(--fm);}
+.pf-tag-tool{background:rgba(0,212,168,.1);color:var(--teal);border:1px solid rgba(0,212,168,.2);}
+.pf-tag-cat{background:rgba(255,179,71,.1);color:var(--warn);}
+.pf-tag-comp{background:rgba(100,149,237,.1);color:#6495ED;}
+/* Add form */
+.add-btn{width:100%;background:rgba(0,212,168,.05);border:1.5px dashed rgba(0,212,168,.3);border-radius:14px;padding:18px;cursor:pointer;color:var(--teal);font-family:var(--fd);font-size:14px;font-weight:700;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.add-btn:hover{background:rgba(0,212,168,.1);border-color:var(--teal);}
+.pf-form{background:var(--navy2);border:1px solid var(--teal);border-radius:16px;padding:24px;margin-top:14px;display:none;}
+.pf-form.open{display:block;animation:su .3s ease;}
+.fr{margin-bottom:14px;}
+.fr label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;font-family:var(--fm);letter-spacing:.5px;text-transform:uppercase;}
+.fr input,.fr textarea{width:100%;background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--white);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .2s;}
+.fr input:focus,.fr textarea:focus{border-color:var(--teal);}
+.fr textarea{height:72px;resize:none;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.f2{grid-template-columns:1fr;}}
+.upload-zone{border:1.5px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--teal);background:rgba(0,212,168,.04);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.upload-zone p{font-size:13px;color:var(--muted);}
+.upload-zone .uf-preview{width:80px;height:60px;border-radius:8px;object-fit:cover;margin:0 auto 8px;}
+.fa{display:flex;gap:10px;margin-top:6px;}
+.pf-skip{display:flex;justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px;}
+
+/* RESULT */
 #s-result{padding:0;}
 .rw{max-width:920px;margin:0 auto;padding:36px 20px 80px;}
 .pbar{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:28px;}
@@ -120,8 +165,11 @@ h1 em{color:var(--teal);font-style:normal;}
 .drow{display:flex;justify-content:space-between;}
 .dsc{font-family:var(--fm);font-size:12px;color:var(--teal);}
 .dsub{font-size:11px;color:var(--muted);}
+/* Projects */
 .projects{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
 .pj{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;}
+.pj.vibe-pj{border-color:rgba(0,212,168,.35);background:linear-gradient(135deg,rgba(0,212,168,.04),var(--card));}
+.vibe-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(0,212,168,.12);border:1px solid rgba(0,212,168,.25);padding:3px 9px;border-radius:5px;font-size:10px;color:var(--teal);font-family:var(--fm);margin-bottom:8px;}
 .pjn{font-family:var(--fd);font-size:15px;font-weight:700;margin-bottom:5px;}
 .pjd{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.55;}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
@@ -132,11 +180,22 @@ h1 em{color:var(--teal);font-style:normal;}
 .aiscore{text-align:center;min-width:66px;}
 .aipct{font-family:var(--fd);font-size:26px;font-weight:800;line-height:1;}
 .aipct-l{font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--fm);}
+/* Analysis */
 .acard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
 .aibadge{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;background:rgba(0,212,168,.08);border:1px solid rgba(0,212,168,.2);border-radius:20px;font-size:10px;color:var(--teal);font-family:var(--fm);margin-bottom:14px;}
 .atxt{font-size:14px;line-height:1.8;color:rgba(240,248,255,.8);}
 .ahint{display:flex;gap:12px;margin-top:16px;padding:14px;background:rgba(0,212,168,.05);border-radius:10px;border-left:3px solid var(--teal);}
 .ahint p{font-size:13px;color:rgba(240,248,255,.7);line-height:1.6;}
+/* Share CTA */
+.share-cta{background:linear-gradient(135deg,rgba(0,212,168,.1),rgba(255,77,141,.07));border:1px solid rgba(0,212,168,.25);border-radius:18px;padding:32px;margin-bottom:28px;text-align:center;}
+.share-cta h3{font-family:var(--fd);font-size:20px;font-weight:700;margin-bottom:8px;}
+.share-cta p{color:var(--muted);font-size:13px;margin-bottom:20px;}
+.email-row{display:flex;gap:10px;max-width:420px;margin:0 auto 16px;}
+.email-row input{flex:1;background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--white);font-family:var(--fb);font-size:13px;outline:none;}
+.email-row input:focus{border-color:var(--teal);}
+.share-acts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
+.email-ok{display:none;font-size:13px;color:var(--teal);margin-top:8px;}
+/* Badge */
 .bsec{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
 .bprev{display:inline-flex;align-items:center;border-radius:5px;overflow:hidden;border:1px solid var(--border);margin-bottom:16px;}
 .bl{padding:5px 9px;background:#555;font-size:12px;font-family:var(--fm);color:white;}
@@ -144,25 +203,52 @@ h1 em{color:var(--teal);font-style:normal;}
 .bcode{background:var(--navy);border:1px solid var(--border);border-radius:9px;padding:14px 44px 14px 18px;font-family:var(--fm);font-size:11px;color:rgba(240,248,255,.7);word-break:break-all;line-height:1.7;position:relative;}
 .cbtn{position:absolute;top:10px;right:10px;background:rgba(0,212,168,.1);border:1px solid rgba(0,212,168,.25);color:var(--teal);padding:3px 10px;border-radius:5px;cursor:pointer;font-family:var(--fm);font-size:10px;transition:all .2s;}
 .cbtn:hover{background:rgba(0,212,168,.2);}
-.cta{background:linear-gradient(135deg,rgba(0,212,168,.07),rgba(255,77,141,.05));border:1px solid rgba(0,212,168,.18);border-radius:18px;padding:32px;text-align:center;}
-.cta h3{font-family:var(--fd);font-size:20px;font-weight:700;margin-bottom:8px;}
-.cta p{color:var(--muted);font-size:13px;margin-bottom:22px;}
-.cta-a{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* ANALYTICS DASHBOARD */
+#s-analytics{padding:0;}
+.aw{max-width:900px;margin:0 auto;padding:36px 20px 80px;}
+.analytics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+@media(max-width:600px){.analytics-grid{grid-template-columns:1fr 1fr;}}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;}
+.stat-card-num{font-family:var(--fd);font-size:36px;font-weight:800;color:var(--teal);line-height:1;margin-bottom:4px;}
+.stat-card-lbl{font-size:12px;color:var(--muted);}
+/* Trend chart */
+.trend-chart{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
+.bars{display:flex;align-items:flex-end;gap:8px;height:80px;margin-top:16px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar{width:100%;background:rgba(0,212,168,.25);border-radius:4px 4px 0 0;transition:height .8s ease;min-height:3px;position:relative;}
+.bar:hover{background:var(--teal);}
+.bar-lbl{font-size:10px;color:var(--muted);font-family:var(--fm);}
+/* Module heatmap */
+.module-heat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
+.mh-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.mh-name{font-size:13px;width:120px;flex-shrink:0;}
+.mh-bar{flex:1;height:10px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;}
+.mh-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--teal),var(--pink));transition:width .8s ease;}
+.mh-val{font-family:var(--fm);font-size:11px;color:var(--muted);width:48px;text-align:right;}
+/* AI advice */
+.advice-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:28px;}
+.advice-insight{font-size:14px;line-height:1.8;color:rgba(240,248,255,.8);margin-bottom:16px;}
+.advice-list{display:flex;flex-direction:column;gap:10px;}
+.advice-item{background:var(--navy2);border-radius:10px;padding:14px 16px;}
+.advice-item strong{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:3px;}
+.advice-item span{font-size:12px;color:var(--muted);line-height:1.5;}
+.no-kv-banner{background:rgba(255,179,71,.08);border:1px solid rgba(255,179,71,.25);border-radius:12px;padding:20px;margin-bottom:24px;font-size:13px;color:var(--warn);line-height:1.7;}
 </style>
 </head>
 <body>
 <div class="orb o1"></div><div class="orb o2"></div>
 
-<!-- ══ LANDING ══ -->
+<!-- LANDING -->
 <div id="s-land" class="screen active">
   <nav><div class="logo">AI<span>Resume</span></div><span class="pill">MVP · BETA</span></nav>
   <main>
     <div class="eyebrow">AI CAPABILITY INDEX</div>
     <h1>你的 AI 能力<br>值得被<em>量化</em></h1>
-    <p class="sub">连接 GitHub + 8 道场景题，3 分钟生成基于真实数据的 AI 简历。可分享，可嵌入 GitHub 主页。</p>
+    <p class="sub">连接 GitHub + 8 道场景题 + 作品集上传，3 分钟生成可验证的 AI 简历。</p>
     <button class="btn btn-p" style="font-size:15px;padding:15px 32px;" onclick="startOAuth()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      连接 GitHub 开始测试
+      连接 GitHub 开始
     </button>
     <div class="stats">
       <div><div class="sn">82%</div><div class="sl">开发者使用 AI 工具</div></div>
@@ -173,13 +259,13 @@ h1 em{color:var(--teal);font-style:normal;}
   </main>
 </div>
 
-<!-- ══ LOADING GITHUB ══ -->
+<!-- LOADING -->
 <div id="s-loading" class="screen">
   <nav><div class="logo">AI<span>Resume</span></div><span class="pill">读取数据中</span></nav>
   <main>
     <div class="spin"></div>
-    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:8px;">正在读取你的 GitHub 数据</h2>
-    <p style="color:var(--muted);margin-bottom:28px;">分析你的仓库和贡献记录...</p>
+    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:8px;">读取 GitHub 数据中</h2>
+    <p style="color:var(--muted);margin-bottom:28px;">分析仓库和贡献记录...</p>
     <div class="steps" id="lsteps">
       <div class="step" id="ls1"><div class="dot"></div>验证 GitHub 授权</div>
       <div class="step" id="ls2"><div class="dot"></div>读取仓库列表</div>
@@ -190,9 +276,9 @@ h1 em{color:var(--teal);font-style:normal;}
   </main>
 </div>
 
-<!-- ══ QUIZ ══ -->
+<!-- QUIZ -->
 <div id="s-quiz" class="screen">
-  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">问卷 2/3</span></nav>
+  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">问卷 · 步骤2</span></nav>
   <div class="qwrap">
     <div class="ph"><div class="pt"><div class="pf" id="qprog" style="width:0%"></div></div><span class="pl" id="qctr">1 / 8</span></div>
     <div id="qarea"></div>
@@ -203,287 +289,485 @@ h1 em{color:var(--teal);font-style:normal;}
   </div>
 </div>
 
-<!-- ══ ANALYZING ══ -->
+<!-- PORTFOLIO -->
+<div id="s-vibe" class="screen">
+  <nav><div class="logo">AI<span>Resume</span></div><span class="pill">作品集 · 步骤3</span></nav>
+  <div class="vwrap">
+    <div class="vh">
+      <div style="font-size:40px;margin-bottom:16px;">🎨</div>
+      <h2>上传你的 AI 作品</h2>
+      <p>GitHub 只展示代码。把你用 AI 做出来的东西上传到这里——截图、链接、描述都行。DeepSeek 会自动分析每个作品的 AI 含量。</p>
+    </div>
+    <!-- 添加类型选择 -->
+    <div class="pf-types">
+      <button class="pf-type-btn active" id="type-url" onclick="setType('url')">🔗 链接</button>
+      <button class="pf-type-btn" id="type-image" onclick="setType('image')">🖼 截图</button>
+      <button class="pf-type-btn" id="type-text" onclick="setType('text')">📝 描述</button>
+    </div>
+    <div class="pf-list" id="pf-list"></div>
+    <button class="add-btn" id="add-btn" onclick="togglePfForm()">
+      <span style="font-size:18px">+</span> <span id="add-btn-txt">添加作品</span>
+    </button>
+    <!-- 添加表单 -->
+    <div class="pf-form" id="pf-form">
+      <div class="fr"><label>作品名称 *</label><input id="pf-title" placeholder="例如：AI 写作助手 / 自动化数据报告工具" /></div>
+      <div class="fr"><label>使用的 AI 工具 *</label><input id="pf-tools" placeholder="例如：Claude Code, Cursor, ChatGPT-4o" /></div>
+      <!-- 根据类型显示不同字段 -->
+      <div id="field-url" class="fr"><label>作品链接 *</label><input id="pf-url" placeholder="https://你的作品.vercel.app" /></div>
+      <div id="field-image" class="fr" style="display:none">
+        <label>上传截图 *（支持 JPG / PNG / GIF，最大 4MB）</label>
+        <div class="upload-zone" id="drop-zone">
+          <input type="file" accept="image/*" onchange="handleImageUpload(event)" />
+          <div id="upload-preview-area">
+            <p style="font-size:22px;margin-bottom:6px">📁</p>
+            <p>点击选择图片或拖拽到此处</p>
+          </div>
+        </div>
+      </div>
+      <div class="fr"><label>一句话描述 *</label><textarea id="pf-desc" placeholder="这个作品解决了什么问题？用 AI 做了什么？结果如何？"></textarea></div>
+      <div class="fa">
+        <button class="btn btn-p" onclick="addPortfolio()">✅ 添加并分析</button>
+        <button class="btn btn-g" onclick="togglePfForm()">取消</button>
+      </div>
+    </div>
+    <div class="pf-skip">
+      <button class="btn btn-p" style="width:100%;max-width:340px;justify-content:center;" id="pf-next-btn" onclick="goto('analyzing');runAnalysis();">
+        生成我的 AI 简历 🚀
+      </button>
+      <button class="btn btn-g" style="font-size:13px;padding:8px 20px;" onclick="goto('analyzing');runAnalysis();">
+        跳过，直接生成
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ANALYZING -->
 <div id="s-analyzing" class="screen">
   <nav><div class="logo">AI<span>Resume</span></div><span class="pill">DeepSeek 分析中</span></nav>
   <main>
     <div class="spin"></div>
-    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:8px;">DeepSeek 正在分析你的 AI 能力</h2>
-    <p style="color:var(--muted);margin-bottom:28px;">结合 GitHub 真实数据 + 问卷行为，生成专属报告...</p>
+    <h2 style="font-family:var(--fd);font-size:24px;font-weight:700;margin-bottom:8px;">DeepSeek 正在生成你的 AI 简历</h2>
+    <p style="color:var(--muted);margin-bottom:28px;">结合 GitHub + 作品集 + 问卷，生成专属报告...</p>
     <div class="steps" id="asteps">
-      <div class="step" id="as1"><div class="dot"></div>解析仓库 AI 信号</div>
+      <div class="step" id="as1"><div class="dot"></div>整合 GitHub + 作品集数据</div>
       <div class="step" id="as2"><div class="dot"></div>计算六维度 ACI 评分</div>
-      <div class="step" id="as3"><div class="dot"></div>DeepSeek 筛选优质项目</div>
+      <div class="step" id="as3"><div class="dot"></div>DeepSeek 分析项目 AI 含量</div>
       <div class="step" id="as4"><div class="dot"></div>生成个性化能力报告</div>
       <div class="step" id="as5"><div class="dot"></div>生成 GitHub Badge</div>
     </div>
-    <div class="err" id="err-analyze" style="margin-top:24px;max-width:440px;"></div>
   </main>
 </div>
 
-<!-- ══ RESULT ══ -->
+<!-- RESULT -->
 <div id="s-result" class="screen">
   <nav>
     <div class="logo">AI<span>Resume</span></div>
     <div style="display:flex;gap:10px;align-items:center;">
-      <span id="share-url" style="font-family:var(--fm);font-size:11px;color:var(--muted);">airesume.dev/@—</span>
-      <button class="btn btn-g" style="padding:7px 14px;font-size:12px;" onclick="copyLink()">🔗 复制链接</button>
+      <span id="share-url" style="font-family:var(--fm);font-size:11px;color:var(--muted);"></span>
+      <button class="btn btn-g" style="padding:7px 14px;font-size:12px;" onclick="gotoAnalytics()">📊 数据看板</button>
+      <button class="btn btn-g" style="padding:7px 14px;font-size:12px;" onclick="copyLink()">🔗 分享</button>
     </div>
   </nav>
-  <div class="rw">
+  <div class="rw" id="result-tracking">
     <div class="pbar">
       <img class="av" id="r-av" src="" alt="">
       <div><div class="pname" id="r-nm">—</div><div class="pmeta" id="r-mt">—</div></div>
       <a class="plink" id="r-gh" href="#" target="_blank">GitHub →</a>
     </div>
     <div class="rhero">
-      <div class="scard">
+      <div class="scard" data-module="score">
         <div class="slbl">ACI — AI CAPABILITY INDEX</div>
         <div class="snum" id="r-score">—</div>
         <div class="slvl" id="r-level">⭐ —</div>
-        <p class="sdesc">基于你的 GitHub 真实数据 + 行为问卷综合评分</p>
+        <p class="sdesc">基于 GitHub + 作品集 + 行为问卷综合评分</p>
         <div class="spct"><div class="spb"><div class="spf" id="r-pbar" style="width:0%"></div></div><span class="spt" id="r-ptxt">Top —%</span></div>
       </div>
-      <div class="rcard">
+      <div class="rcard" data-module="radar">
         <div class="rtl">📡 能力雷达图</div>
         <canvas id="radar" width="260" height="260"></canvas>
       </div>
     </div>
     <div class="sec">六维度评分</div>
-    <div class="dims" id="dims"></div>
-    <div class="sec">🔍 AI 优质项目（DeepSeek 识别）</div>
-    <div class="projects" id="projects"></div>
-    <div class="sec">DeepSeek 能力分析报告</div>
-    <div class="acard">
+    <div class="dims" id="dims" data-module="dims"></div>
+    <div class="sec">🔍 AI 项目分析（DeepSeek 识别）</div>
+    <div class="projects" id="projects" data-module="projects"></div>
+    <div class="sec">DeepSeek 能力分析</div>
+    <div class="acard" data-module="analysis">
       <div class="aibadge">✦ DeepSeek 实时生成</div>
       <p class="atxt" id="r-analysis">—</p>
       <div class="ahint"><span style="font-size:18px">💡</span><p id="r-tip">—</p></div>
     </div>
+    <div class="share-cta" data-module="cta">
+      <h3>🚀 分享你的 AI 简历</h3>
+      <p>留下邮箱，接入更多 AI 工具数据后第一个通知你</p>
+      <div class="email-row">
+        <input id="email-input" type="email" placeholder="你的邮箱地址" />
+        <button class="btn btn-p" style="padding:11px 20px;" onclick="submitEmail()">获取通知</button>
+      </div>
+      <div class="email-ok" id="email-ok">✅ 已记录！</div>
+      <div class="share-acts">
+        <button class="btn btn-pink" onclick="shareResult()">📤 分享 AI 简历</button>
+        <button class="btn btn-g" onclick="copyLink()">🔗 复制链接</button>
+      </div>
+    </div>
     <div class="sec">GitHub Badge</div>
-    <div class="bsec">
+    <div class="bsec" data-module="badge">
       <h3 style="font-family:var(--fd);font-size:16px;font-weight:700;margin-bottom:6px;">嵌入你的 GitHub README</h3>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">将以下代码粘贴到 README.md，展示你的 AI 能力等级</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">复制以下代码粘贴到 README.md</p>
       <div class="bprev"><span class="bl">AI Resume</span><span class="br" id="badge-r" style="background:#00D4A8">ACI — · —</span></div>
       <div class="bcode" id="bcode">—<button class="cbtn" onclick="copyBadge()">复制</button></div>
     </div>
-    <div class="cta">
-      <h3>🔓 接入更多数据，提升评分精度</h3>
-      <p>目前评分基于 GitHub + 问卷。接入 Claude Code 日志后 D1/D4 维度将更准确，且可与更多开发者横向对比。</p>
-      <div class="cta-a">
-        <button class="btn btn-p" onclick="alert('感谢你的参与！🎉\n\nClaude Code 数据接入将在正式版开放。\n你的测试对我们非常有价值！')">接入 Claude Code 数据</button>
-        <button class="btn btn-g" onclick="share()">分享我的 AI 简历</button>
-      </div>
+  </div>
+</div>
+
+<!-- ANALYTICS -->
+<div id="s-analytics" class="screen">
+  <nav>
+    <div class="logo">AI<span>Resume</span></div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn btn-g" style="padding:7px 14px;font-size:12px;" onclick="goto('result')">← 返回简历</button>
+    </div>
+  </nav>
+  <div class="aw">
+    <div style="margin-bottom:28px;">
+      <h2 style="font-family:var(--fd);font-size:26px;font-weight:700;margin-bottom:6px;">📊 作品集数据看板</h2>
+      <p style="font-size:14px;color:var(--muted);" id="analytics-user-label">加载中...</p>
+    </div>
+    <div id="no-kv-banner" class="no-kv-banner" style="display:none">
+      ⚠️ 数据看板需要开启 Vercel KV。请按以下步骤操作：<br>
+      1. 在 Vercel 项目页面 → Storage → Create Database → KV<br>
+      2. 创建后 → Settings → Environment Variables 会自动添加 <code>KV_REST_API_URL</code> 和 <code>KV_REST_API_TOKEN</code><br>
+      3. 重新部署后数据看板即可使用
+    </div>
+    <!-- 核心指标 -->
+    <div class="analytics-grid" id="stat-cards">
+      <div class="stat-card"><div class="stat-card-num" id="s-today">—</div><div class="stat-card-lbl">今日浏览量</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="s-total">—</div><div class="stat-card-lbl">总浏览量</div></div>
+      <div class="stat-card"><div class="stat-card-num" id="s-avgtime">—</div><div class="stat-card-lbl">平均停留（秒）</div></div>
+    </div>
+    <!-- 7天趋势 -->
+    <div class="trend-chart">
+      <div class="sec" style="margin-bottom:4px;">近7天浏览趋势</div>
+      <div class="bars" id="trend-bars"></div>
+    </div>
+    <!-- 模块热力 -->
+    <div class="module-heat">
+      <div class="sec" style="margin-bottom:16px;">各模块停留时长</div>
+      <div id="module-rows"></div>
+    </div>
+    <!-- AI 建议 -->
+    <div class="advice-card">
+      <div class="aibadge">✦ DeepSeek 数据分析</div>
+      <p class="advice-insight" id="advice-insight">加载中...</p>
+      <div class="advice-list" id="advice-list"></div>
     </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-// CONFIG
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// CONFIG & STATE
+// ═══════════════════════════════════════
 const CLIENT_ID = 'Ov23liLyNYTpMt8fL9ns';
-const REDIRECT  = window.location.origin + '/api/auth/callback';
+const BASE_URL  = window.location.origin;
+const REDIRECT  = BASE_URL + '/api/auth/callback';
 
-// ══════════════════════════════════════════════════════
-// STATE
-// ══════════════════════════════════════════════════════
-const S = { token: null, ghData: null, answers: {} };
+const S = {
+  token: null,
+  ghData: null,
+  answers: {},
+  portfolio: [],     // { id, type, title, tools, desc, url, imageBase64, imageType, analysis }
+  currentType: 'url',
+  currentImage: null,
+  pageStartTime: Date.now(),
+  moduleTimers: {},
+};
 
-// ══════════════════════════════════════════════════════
-// INIT — 从 URL 参数里取 token（OAuth 回调后）
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
 (function init() {
   const p = new URLSearchParams(location.search);
-  if (p.get('error')) {
-    history.replaceState({}, '', '/');
-    alert('GitHub 授权失败：' + p.get('error') + '\n请重试。');
-    return;
-  }
+  if (p.get('error')) { history.replaceState({},'','/'); alert('GitHub 授权失败：'+p.get('error')); return; }
   if (p.get('token')) {
     S.token = p.get('token');
     sessionStorage.setItem('gh_token', S.token);
-    history.replaceState({}, '', '/');
-    goto('loading');
-    fetchGitHub();
-    return;
+    history.replaceState({},'','/');
+    goto('loading'); fetchGitHub(); return;
   }
   const saved = sessionStorage.getItem('gh_token');
   if (saved) S.token = saved;
 })();
 
-// ══════════════════════════════════════════════════════
-// NAVIGATION
-// ══════════════════════════════════════════════════════
 function goto(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('s-' + id).classList.add('active');
-  window.scrollTo(0, 0);
+  document.getElementById('s-'+id).classList.add('active');
+  window.scrollTo(0,0);
 }
 
-// ══════════════════════════════════════════════════════
-// STEP 1: GITHUB OAUTH
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// MODULE TIME TRACKING (for analytics)
+// ═══════════════════════════════════════
+function startModuleTracking() {
+  const modules = document.querySelectorAll('[data-module]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const m = e.target.dataset.module;
+      if (e.isIntersecting) {
+        S.moduleTimers[m] = S.moduleTimers[m] || { start: Date.now(), total: 0 };
+        S.moduleTimers[m].start = Date.now();
+      } else if (S.moduleTimers[m]?.start) {
+        S.moduleTimers[m].total = (S.moduleTimers[m].total||0) + (Date.now() - S.moduleTimers[m].start);
+        delete S.moduleTimers[m].start;
+      }
+    });
+  }, { threshold: 0.3 });
+  modules.forEach(m => observer.observe(m));
+}
+
+function sendAnalytics() {
+  const login = S.ghData?.user?.login;
+  if (!login) return;
+  // 收集模块时长
+  const moduleData = {};
+  Object.entries(S.moduleTimers).forEach(([m, t]) => {
+    moduleData[m] = Math.round(((t.total||0) + (t.start ? Date.now()-t.start : 0)) / 1000);
+  });
+  const timeSpent = Math.round((Date.now() - S.pageStartTime) / 1000);
+  fetch('/api/analytics', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({ user:login, timeSpent, moduleData, referer:document.referrer }),
+  }).catch(()=>{});
+}
+window.addEventListener('beforeunload', sendAnalytics);
+
+// ═══════════════════════════════════════
+// OAUTH
+// ═══════════════════════════════════════
 function startOAuth() {
-  const url = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=read:user,public_repo&redirect_uri=${encodeURIComponent(REDIRECT)}`;
-  window.location.href = url;
+  window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=read:user,public_repo&redirect_uri=${encodeURIComponent(REDIRECT)}`;
 }
 
-// ══════════════════════════════════════════════════════
-// STEP 2: FETCH GITHUB DATA
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
+// GITHUB FETCH
+// ═══════════════════════════════════════
 async function fetchGitHub() {
   const ids = ['ls1','ls2','ls3','ls4','ls5'];
-  let i = 0;
-  const tick = setInterval(() => {
-    if (i > 0) document.getElementById(ids[i-1])?.classList.replace('active','done');
-    if (i < ids.length) document.getElementById(ids[i])?.classList.add('active');
+  let i=0;
+  const tick = setInterval(()=>{
+    if(i>0) document.getElementById(ids[i-1])?.classList.replace('active','done');
+    if(i<ids.length) document.getElementById(ids[i])?.classList.add('active');
     i++;
   }, 600);
-
   try {
-    const res = await fetch('/api/github', {
-      headers: { Authorization: `Bearer ${S.token}` }
-    });
+    const res = await fetch('/api/github', { headers:{Authorization:`Bearer ${S.token}`} });
     clearInterval(tick);
-    ids.forEach(id => document.getElementById(id)?.classList.replace('active','done'));
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP ${res.status}`);
-    }
-
+    ids.forEach(id=>document.getElementById(id)?.classList.replace('active','done'));
+    if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.error||`HTTP ${res.status}`); }
     S.ghData = await res.json();
-    setTimeout(() => { goto('quiz'); renderQ(curQ); }, 400);
-
+    setTimeout(()=>{ goto('quiz'); renderQ(curQ); }, 400);
   } catch(e) {
     clearInterval(tick);
     sessionStorage.removeItem('gh_token');
-    alert('读取 GitHub 数据失败：' + e.message + '\n\n请重新授权。');
+    alert('读取 GitHub 数据失败：'+e.message);
     goto('land');
   }
 }
 
-// ══════════════════════════════════════════════════════
-// STEP 3: QUIZ
-// ══════════════════════════════════════════════════════
-const QS = [
-  { tag:'tm', tl:'AI 工具使用', dim:'D2',
-    txt:'你最近一个月，使用 AI 编程工具（Claude Code / Cursor / Copilot 等）的频率是？',
-    sub:'选择最符合你实际情况的选项',
-    opts:[{l:'A',t:'几乎不用',d:'偶尔试试，不是工作流的一部分',s:1},{l:'B',t:'每周几次',d:'用于特定任务，比如查文档或写测试',s:2},{l:'C',t:'每天使用',d:'已是日常编程的重要辅助',s:3},{l:'D',t:'几乎全程依赖',d:'大部分代码有 AI 参与，我负责架构和审查',s:4}]},
-  { tag:'tc', tl:'AI 代码贡献', dim:'D3',
-    txt:'上周代码提交中，AI 生成或辅助的代码大概占多少？',
-    sub:'包括你 accept 了 AI 建议、让 AI 起草后修改的代码',
-    opts:[{l:'A',t:'不到 10%',d:'基本自己写，AI 只是偶尔查询',s:1},{l:'B',t:'10%–30%',d:'样板代码和测试让 AI 生成',s:2},{l:'C',t:'30%–60%',d:'功能实现经常和 AI 协作完成',s:3},{l:'D',t:'超过 60%',d:'AI 起草，我负责审查、修改和整合',s:4}]},
-  { tag:'tp', tl:'Prompt 工程', dim:'D4',
-    txt:'当 AI 给出不满意的代码，你通常怎么做？',
-    sub:'选择你最常用的方式',
-    opts:[{l:'A',t:'重新描述一遍问题',d:'换种方式再说一次',s:1},{l:'B',t:'提供更多上下文',d:'贴上相关代码、错误信息或期望输出',s:2},{l:'C',t:'分解成多步骤追问',d:'先确认理解，再一步一步引导',s:3},{l:'D',t:'结构化 prompt 框架',d:'角色+约束+示例，系统化引导',s:4}]},
-  { tag:'ta', tl:'应用构建', dim:'D5',
-    txt:'你是否曾独立用 AI 辅助，从零构建过完整可运行的应用或工具？',
-    sub:'包括个人项目、副业产品、内部工具',
-    opts:[{l:'A',t:'还没有',d:'更多用于学习或日常编程辅助',s:1},{l:'B',t:'构建过脚本或小工具',d:'几十到几百行，解决特定问题',s:2},{l:'C',t:'构建过完整 Web 应用',d:'有前后端、可部署、别人可以用',s:3},{l:'D',t:'构建过多个产品',d:'其中至少一个有真实用户',s:4}]},
-  { tag:'tm', tl:'模型认知', dim:'D1',
-    txt:'面对同一个任务，你如何选择 AI 工具或模型？',
-    sub:'考验你对不同 AI 工具能力边界的认知',
-    opts:[{l:'A',t:'用习惯哪个就用哪个',d:'基本用一个固定的工具',s:1},{l:'B',t:'根据任务类型粗略选择',d:'代码用 Cursor，写作用 Claude',s:2},{l:'C',t:'对比不同模型的输出',d:'同一问题问多个模型，取最好的',s:3},{l:'D',t:'有系统性选择策略',d:'了解各模型 context、推理能力、成本',s:4}]},
-  { tag:'tc', tl:'代码质量', dim:'D3',
-    txt:'当你接受 AI 生成的代码时，通常会做什么？',
-    sub:'你的 review 习惯直接影响 AI 代码的最终质量',
-    opts:[{l:'A',t:'直接用，测试能跑就行',d:'主要看功能是否符合预期',s:1},{l:'B',t:'读一遍，理解逻辑',d:'确保自己能看懂，会改错误',s:2},{l:'C',t:'系统性 review',d:'关注命名、边界情况、性能',s:3},{l:'D',t:'深度重构',d:'与代码库风格一致，完整 review 后 commit',s:4}]},
-  { tag:'tp', tl:'上下文管理', dim:'D4',
-    txt:'你如何管理和复用你的 Prompt 经验？',
-    sub:'好的 Prompt 知识管理是高阶 AI 使用者的标志',
-    opts:[{l:'A',t:'每次现想现写',d:'没有专门整理，用完就算',s:1},{l:'B',t:'笔记保存好用的 prompt',d:'有时候会复制过来用',s:2},{l:'C',t:'有自己的 prompt 库',d:'按场景分类，随时调用',s:3},{l:'D',t:'Claude Projects / System Prompt 工程',d:'有专属工作区、持久化上下文',s:4}]},
-  { tag:'ta', tl:'社区影响力', dim:'D6',
-    txt:'你是否分享过你的 AI 使用经验或工具？',
-    sub:'影响力是 AI 能力的外部延伸',
-    opts:[{l:'A',t:'几乎没有',d:'主要自己用，不太分享',s:1},{l:'B',t:'偶尔和同事讲',d:'口头分享，没有公开记录',s:2},{l:'C',t:'发过文章或开源了工具',d:'有一定公开影响力',s:3},{l:'D',t:'稳定的内容输出或社区',d:'持续创作，有固定关注者',s:4}]},
+// ═══════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════
+const QS=[
+  {tag:'tm',tl:'AI 工具频率',txt:'最近一个月，你使用 AI 工具（Claude / Cursor / GPT 等）的频率？',sub:'包括编程、写作、设计、数据分析等所有用途',opts:[{l:'A',t:'几乎不用',d:'偶尔试试',s:1},{l:'B',t:'每周几次',d:'用于特定任务',s:2},{l:'C',t:'每天使用',d:'已是日常工作的重要辅助',s:3},{l:'D',t:'全程依赖',d:'大部分工作有 AI 参与',s:4}]},
+  {tag:'tc',tl:'AI 输出占比',txt:'你的输出中（代码/文案/方案），AI 生成或辅助的比例？',sub:'诚实评估，影响 ACI 评分准确性',opts:[{l:'A',t:'< 10%',d:'基本自己完成',s:1},{l:'B',t:'10–30%',d:'重复部分让 AI 做',s:2},{l:'C',t:'30–60%',d:'和 AI 协作完成主要内容',s:3},{l:'D',t:'> 60%',d:'AI 起草，我审查调整',s:4}]},
+  {tag:'tp',tl:'Prompt 策略',txt:'AI 给出不满意结果时，你通常怎么做？',sub:'考验你的 prompt 工程能力',opts:[{l:'A',t:'重新描述',d:'换个说法再试',s:1},{l:'B',t:'补充上下文',d:'贴材料或期望输出',s:2},{l:'C',t:'分步引导',d:'先确认理解，再逐步推进',s:3},{l:'D',t:'结构化框架',d:'角色+约束+示例',s:4}]},
+  {tag:'ta',tl:'作品构建',txt:'你是否用 AI 从零构建过完整可用的产品？',sub:'网站、工具、脚本、自动化流程都算',opts:[{l:'A',t:'还没有',d:'更多辅助日常工作',s:1},{l:'B',t:'做过小工具',d:'脚本/小程序',s:2},{l:'C',t:'完整产品',d:'有 UI、可部署、别人能用',s:3},{l:'D',t:'多个产品',d:'至少一个有真实用户',s:4}]},
+  {tag:'tm',tl:'工具选择',txt:'不同任务你如何选择 AI 工具？',sub:'考验你对 AI 工具生态的认知深度',opts:[{l:'A',t:'用惯哪个用哪个',d:'固定一个',s:1},{l:'B',t:'粗略按场景选',d:'代码/写作分开用',s:2},{l:'C',t:'多模型对比',d:'同一问题问多个',s:3},{l:'D',t:'系统性策略',d:'了解各模型能力边界和成本',s:4}]},
+  {tag:'tc',tl:'输出质量',txt:'收到 AI 生成内容，你通常怎么处理？',sub:'review 习惯直接影响最终质量',opts:[{l:'A',t:'直接用',d:'能跑就行',s:1},{l:'B',t:'读一遍改问题',d:'能看懂',s:2},{l:'C',t:'系统 review',d:'关注细节和边界',s:3},{l:'D',t:'深度打磨',d:'当草稿，完整修改',s:4}]},
+  {tag:'tp',tl:'工作流管理',txt:'你如何复用 Prompt 或 AI 工作流经验？',sub:'好的管理习惯是高效 AI 使用者标志',opts:[{l:'A',t:'现想现写',d:'没有整理',s:1},{l:'B',t:'笔记保存',d:'偶尔复制',s:2},{l:'C',t:'有 prompt 库',d:'分类随时调用',s:3},{l:'D',t:'自定义工作区',d:'Claude Projects / 持久化配置',s:4}]},
+  {tag:'ta',tl:'影响力',txt:'你是否分享过 AI 使用经验或构建成果？',sub:'影响力是 AI 能力的外部验证',opts:[{l:'A',t:'几乎没有',d:'自己用',s:1},{l:'B',t:'口头分享',d:'和同事朋友讲',s:2},{l:'C',t:'公开发布',d:'文章/帖子/开源工具',s:3},{l:'D',t:'持续输出',d:'固定关注者',s:4}]},
 ];
-
-let curQ = 0;
+let curQ=0;
 function renderQ(i) {
-  const q = QS[i];
-  document.getElementById('qprog').style.width = (i / QS.length * 100) + '%';
-  document.getElementById('qctr').textContent = (i+1) + ' / ' + QS.length;
-  const sel = S.answers[i];
-  document.getElementById('qarea').innerHTML = `<div class="qcard">
+  const q=QS[i];
+  document.getElementById('qprog').style.width=(i/QS.length*100)+'%';
+  document.getElementById('qctr').textContent=(i+1)+' / '+QS.length;
+  const sel=S.answers[i];
+  document.getElementById('qarea').innerHTML=`<div class="qcard">
     <span class="qtag ${q.tag}">${q.tl}</span>
-    <div class="qtxt">${q.txt}</div>
-    <div class="qsub">${q.sub}</div>
+    <div class="qtxt">${q.txt}</div><div class="qsub">${q.sub}</div>
     <div class="opts">${q.opts.map((o,j)=>`
       <div class="opt ${sel===j?'sel':''}" onclick="selOpt(${i},${j})">
         <div class="ol">${o.l}</div>
         <div class="oc"><strong>${o.t}</strong><span>${o.d}</span></div>
-      </div>`).join('')}
-    </div>
+      </div>`).join('')}</div>
   </div>`;
-  document.getElementById('btn-prev').style.display = i > 0 ? 'flex' : 'none';
-  document.getElementById('btn-next').disabled = sel === undefined;
-  document.getElementById('btn-next').textContent = i === QS.length-1 ? '生成我的 AI 简历 🚀' : '下一题 →';
+  document.getElementById('btn-prev').style.display=i>0?'flex':'none';
+  document.getElementById('btn-next').disabled=sel===undefined;
+  document.getElementById('btn-next').textContent=i===QS.length-1?'下一步：添加作品 →':'下一题 →';
 }
-function selOpt(qi, oi) { S.answers[qi] = oi; renderQ(qi); }
-function nextQ() {
-  if (curQ < QS.length-1) { curQ++; renderQ(curQ); window.scrollTo(0,0); }
-  else { goto('analyzing'); runAnalysis(); }
+function selOpt(qi,oi){S.answers[qi]=oi;renderQ(qi);}
+function nextQ(){if(curQ<QS.length-1){curQ++;renderQ(curQ);window.scrollTo(0,0);}else{goto('vibe');}}
+function prevQ(){if(curQ>0){curQ--;renderQ(curQ);}}
+
+// ═══════════════════════════════════════
+// PORTFOLIO
+// ═══════════════════════════════════════
+function setType(t) {
+  S.currentType=t;
+  document.querySelectorAll('.pf-type-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('type-'+t).classList.add('active');
+  document.getElementById('field-url').style.display  = t==='url'?'block':'none';
+  document.getElementById('field-image').style.display = t==='image'?'block':'none';
 }
-function prevQ() { if(curQ>0){ curQ--; renderQ(curQ); } }
 
-// ══════════════════════════════════════════════════════
-// STEP 4: CALL BACKEND /api/analyze (DeepSeek)
-// ══════════════════════════════════════════════════════
-async function runAnalysis() {
-  const ids = ['as1','as2','as3','as4','as5'];
-  let i = 0;
-  const tick = setInterval(() => {
-    if (i > 0) document.getElementById(ids[i-1])?.classList.replace('active','done');
-    if (i < ids.length) document.getElementById(ids[i])?.classList.add('active');
-    i++;
-  }, 1200);
+function togglePfForm() {
+  const f=document.getElementById('pf-form');
+  const open=f.style.display==='block';
+  f.style.display=open?'none':'block';
+  document.getElementById('add-btn-txt').textContent=open?'添加作品':'收起';
+  if (!open) { setType(S.currentType); document.getElementById('pf-title').focus(); }
+}
 
-  // 把问卷答案整理成后端需要的格式（每题的选项分值 1-4）
-  const quizAnswers = QS.map((q, idx) => q.opts[S.answers[idx] ?? 0].s);
+function handleImageUpload(e) {
+  const file=e.target.files[0];
+  if (!file) return;
+  if (file.size > 4*1024*1024) { alert('图片不能超过 4MB'); return; }
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    S.currentImage={ base64:ev.target.result.split(',')[1], type:file.type };
+    const area=document.getElementById('upload-preview-area');
+    area.innerHTML=`<img class="uf-preview" src="${ev.target.result}"><p style="font-size:12px;color:var(--teal)">${file.name}</p>`;
+  };
+  reader.readAsDataURL(file);
+}
 
+async function addPortfolio() {
+  const title=document.getElementById('pf-title').value.trim();
+  const tools=document.getElementById('pf-tools').value.trim();
+  const desc =document.getElementById('pf-desc').value.trim();
+  const url  =document.getElementById('pf-url').value.trim();
+  if (!title||!tools||!desc) { alert('请填写名称、工具和描述'); return; }
+  if (S.currentType==='url'&&!url) { alert('请填写链接'); return; }
+  if (S.currentType==='image'&&!S.currentImage) { alert('请上传截图'); return; }
+
+  const id = Date.now();
+  const item = {
+    id, type:S.currentType, title, tools, desc,
+    url: S.currentType==='url'?url:'',
+    imageBase64: S.currentType==='image'?S.currentImage?.base64:'',
+    imageType:   S.currentType==='image'?S.currentImage?.type:'',
+    analysis: null,
+    loading: true,
+  };
+  S.portfolio.push(item);
+  S.currentImage=null;
+
+  // 清空表单
+  ['pf-title','pf-tools','pf-desc','pf-url'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('upload-preview-area').innerHTML='<p style="font-size:22px;margin-bottom:6px">📁</p><p>点击选择图片或拖拽到此处</p>';
+  togglePfForm();
+  renderPfList();
+  updateNextBtn();
+
+  // 调用 DeepSeek 分析
   try {
-    const res = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        githubData: S.ghData,
-        quizAnswers,
-      }),
+    const res = await fetch('/api/portfolio', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ item }),
     });
-
-    clearInterval(tick);
-    ids.forEach(id => document.getElementById(id)?.classList.replace('active','done'));
-
     const data = await res.json();
-
-    if (!res.ok || data.error) {
-      const errEl = document.getElementById('err-analyze');
-      errEl.textContent = '⚠ ' + (data.error || '分析接口返回错误，请检查 Vercel 环境变量');
-      errEl.style.display = 'block';
-      // 如果有评分数据也展示出来（DeepSeek 报错但评分仍可用）
-      if (data.dims && data.aci) {
-        setTimeout(() => { renderResult({ ...data, projects:[], analysis:'AI 分析暂时不可用，请检查 DEEPSEEK_API_KEY 环境变量是否正确配置。', tip:'配置正确后重新测试即可获得 DeepSeek 个性化分析。' }); goto('result'); }, 2000);
-      }
-      return;
-    }
-
-    setTimeout(() => { renderResult(data); goto('result'); }, 400);
-
+    const idx = S.portfolio.findIndex(p=>p.id===id);
+    if (idx>=0) { S.portfolio[idx].analysis=data.analysis; S.portfolio[idx].loading=false; }
+    renderPfList();
   } catch(e) {
-    clearInterval(tick);
-    const errEl = document.getElementById('err-analyze');
-    errEl.textContent = '⚠ 网络错误：' + e.message;
-    errEl.style.display = 'block';
+    const idx=S.portfolio.findIndex(p=>p.id===id);
+    if (idx>=0) S.portfolio[idx].loading=false;
+    renderPfList();
   }
 }
 
-// ══════════════════════════════════════════════════════
-// STEP 5: RENDER RESULT
-// ══════════════════════════════════════════════════════
-const DC = [
+function renderPfList() {
+  const list=document.getElementById('pf-list');
+  list.innerHTML=S.portfolio.map((p,i)=>{
+    const a=p.analysis;
+    const typeIcon={'url':'🔗','image':'🖼','text':'📝'}[p.type]||'📁';
+    return `<div class="pf-card">
+      <div class="pf-card-header">
+        <div class="pf-thumb-placeholder">${typeIcon}</div>
+        <div class="pf-card-info">
+          <div class="pf-card-name">${p.title}</div>
+          <div class="pf-card-meta">🛠 ${p.tools}${p.url?` · <a href="${p.url}" target="_blank" style="color:var(--teal)">查看作品 →</a>`:''}</div>
+        </div>
+        <button class="pf-card-del" onclick="removePf(${i})">✕</button>
+      </div>
+      <div class="pf-analysis">
+        ${p.loading
+          ? `<div class="pf-analysis-loading"><div class="dot active" style="background:var(--teal);animation:pulse 1s infinite"></div>DeepSeek 正在分析...</div>`
+          : a ? `
+            <div class="pf-ai-score">
+              <span class="pf-score-num">${a.aiScore}%</span>
+              <div class="pf-score-bar"><div class="pf-score-fill" style="width:${a.aiScore}%"></div></div>
+              <span style="font-family:var(--fm);font-size:11px;color:var(--muted)">AI 含量</span>
+            </div>
+            <p class="pf-summary">${a.summary}</p>
+            <div class="pf-tags-row">
+              ${(a.aiTools||[]).map(t=>`<span class="pf-tag pf-tag-tool">${t}</span>`).join('')}
+              ${a.category?`<span class="pf-tag pf-tag-cat">${a.category}</span>`:''}
+              ${a.complexity?`<span class="pf-tag pf-tag-comp">${a.complexity}</span>`:''}
+            </div>
+            ${a.suggestion?`<p style="font-size:12px;color:var(--muted);margin-top:10px;border-left:2px solid var(--teal);padding-left:8px">${a.suggestion}</p>`:''}
+          ` : `<p style="font-size:13px;color:var(--muted)">分析失败，作品已记录</p>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function removePf(i) { S.portfolio.splice(i,1); renderPfList(); updateNextBtn(); }
+function updateNextBtn() {
+  const n=S.portfolio.length;
+  document.getElementById('pf-next-btn').textContent = n>0 ? `生成我的 AI 简历（${n} 件作品）🚀` : '生成我的 AI 简历 🚀';
+}
+
+// ═══════════════════════════════════════
+// ANALYZE
+// ═══════════════════════════════════════
+async function runAnalysis() {
+  const ids=['as1','as2','as3','as4','as5'];
+  let i=0;
+  const tick=setInterval(()=>{
+    if(i>0) document.getElementById(ids[i-1])?.classList.replace('active','done');
+    if(i<ids.length) document.getElementById(ids[i])?.classList.add('active');
+    i++;
+  }, 1200);
+  const quizAnswers=QS.map((q,idx)=>q.opts[S.answers[idx]??0].s);
+  // 只传必要字段给 analyze（不传图片 base64，避免请求过大）
+  const vibeProjects=S.portfolio.map(p=>({
+    title:p.title, tools:p.tools, desc:p.desc, url:p.url,
+    type:p.type, aiScore:p.analysis?.aiScore||0, category:p.analysis?.category||'',
+    highlights:p.analysis?.highlights||[], analysisReady:!!p.analysis,
+  }));
+  try {
+    const res=await fetch('/api/analyze',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({githubData:S.ghData, quizAnswers, vibeProjects}),
+    });
+    clearInterval(tick);
+    ids.forEach(id=>document.getElementById(id)?.classList.replace('active','done'));
+    const data=await res.json();
+    setTimeout(()=>{ renderResult(data); goto('result'); startModuleTracking(); S.pageStartTime=Date.now(); }, 400);
+  } catch(e) {
+    clearInterval(tick);
+    alert('分析失败：'+e.message);
+  }
+}
+
+// ═══════════════════════════════════════
+// RENDER RESULT
+// ═══════════════════════════════════════
+const DC=[
   {k:'d1',n:'模型调用力',i:'🤖',w:'20%',max:500,c:'#00D4A8'},
   {k:'d2',n:'编程工具熟练度',i:'💻',w:'25%',max:600,c:'#00D4A8'},
   {k:'d3',n:'AI 增强代码贡献',i:'🔧',w:'20%',max:500,c:'#FFB347'},
@@ -491,136 +775,107 @@ const DC = [
   {k:'d5',n:'应用构建力',i:'🚀',w:'15%',max:380,c:'#FF4D8D'},
   {k:'d6',n:'学习 & 影响力',i:'🌐',w:'5%',max:150,c:'#9B8FF0'},
 ];
-const LEVELS = [
-  {min:0,max:200,l:'AI Beginner',n:'L1',e:'🌱'},
-  {min:200,max:500,l:'AI User',n:'L2',e:'⚡'},
-  {min:500,max:1000,l:'AI Practitioner',n:'L3',e:'🔥'},
-  {min:1000,max:2000,l:'AI Builder',n:'L4',e:'🚀'},
-  {min:2000,max:9999,l:'AI Architect',n:'L5',e:'🏆'},
-];
-const getLevel = s => LEVELS.find(l=>s>=l.min&&s<l.max)||LEVELS[0];
+const LEVELS=[{min:0,max:200,l:'AI Beginner',n:'L1',e:'🌱'},{min:200,max:500,l:'AI User',n:'L2',e:'⚡'},{min:500,max:1000,l:'AI Practitioner',n:'L3',e:'🔥'},{min:1000,max:2000,l:'AI Builder',n:'L4',e:'🚀'},{min:2000,max:9999,l:'AI Architect',n:'L5',e:'🏆'}];
+const getLv=s=>LEVELS.find(l=>s>=l.min&&s<l.max)||LEVELS[0];
 
 function renderResult(data) {
-  const { dims, aci, projects, analysis, tip } = data;
-  const gh = S.ghData;
-  const maxAci = DC.reduce((s,d)=>s+d.max*parseFloat(d.w)/100,0); // ~476
-  const pct = Math.min(99, Math.round(aci / 2530 * 100));
-  const top = Math.max(1, 100 - pct);
-  const lv = getLevel(aci);
-
-  // Profile
-  if (gh) {
-    document.getElementById('r-av').src = gh.user.avatar_url;
-    document.getElementById('r-nm').textContent = gh.user.name;
-    document.getElementById('r-mt').textContent = `${gh.repos.length} 个仓库 · ${gh.user.followers} 粉丝 · ${gh.stats.totalStars} Stars`;
-    document.getElementById('r-gh').href = gh.user.html_url;
-    document.getElementById('share-url').textContent = `airesume.dev/@${gh.user.login}`;
+  const {dims,aci,projects,analysis,tip}=data;
+  const gh=S.ghData, pct=Math.min(99,Math.round(aci/2530*100)), top=Math.max(1,100-pct), lv=getLv(aci);
+  const login=gh?.user?.login||'you';
+  if(gh){
+    document.getElementById('r-av').src=gh.user.avatar_url;
+    document.getElementById('r-nm').textContent=gh.user.name||gh.user.login;
+    const vn=S.portfolio.length;
+    document.getElementById('r-mt').textContent=`${gh.repos.length} 个仓库 · ${gh.user.followers} 粉丝 · ${gh.stats.totalStars} Stars${vn>0?' · '+vn+' 件作品':''}`;
+    document.getElementById('r-gh').href=gh.user.html_url;
+    document.getElementById('share-url').textContent=`${BASE_URL}/@${login}`;
   }
-
-  // Score
-  document.getElementById('r-score').textContent = aci.toLocaleString();
-  document.getElementById('r-level').innerHTML = `${lv.e} ${lv.l} · ${lv.n}`;
-  document.getElementById('r-pbar').style.width = pct + '%';
-  document.getElementById('r-ptxt').textContent = `Top ${top}%`;
-
-  // Dims
-  document.getElementById('dims').innerHTML = DC.map(d => {
-    const v = dims[d.k]||0, p = Math.round(v/d.max*100);
-    return `<div class="dcard">
-      <div class="dhdr"><span style="font-size:18px">${d.i}</span><span style="font-size:12px;font-weight:600">${d.n}</span><span class="dw">${d.w}</span></div>
-      <div class="db"><div class="dbf" style="width:${p}%;background:${d.c}"></div></div>
-      <div class="drow"><span class="dsc">${v} / ${d.max}</span><span class="dsub">${p>=70?'🔥 优秀':p>=40?'⚡ 良好':'🌱 待提升'}</span></div>
-    </div>`;
-  }).join('');
-
-  // Projects
-  if (projects && projects.length > 0) {
-    document.getElementById('projects').innerHTML = projects.map(p => {
-      const sc = p.aiScore || 0;
-      const col = sc > 60 ? '#00D4A8' : sc > 30 ? '#FFB347' : '#6495ED';
-      return `<div class="pj">
-        <div>
-          <div class="pjn">${p.name}</div>
-          <div class="pjd">${p.description || ''}</div>
-          <div class="tags">
-            ${(p.aiKeywords||[]).map(t=>`<span class="tag tag-ai">${t}</span>`).join('')}
-            ${p.language?`<span class="tag tag-lang">${p.language}</span>`:''}
-          </div>
-          <div class="pjh">${p.highlight || ''}</div>
-        </div>
-        <div class="aiscore">
-          <svg width="56" height="56" viewBox="0 0 56 56">
-            <circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
-            <circle cx="28" cy="28" r="22" fill="none" stroke="${col}" stroke-width="5"
-              stroke-dasharray="${(2*Math.PI*22*sc/100).toFixed(1)} ${(2*Math.PI*22).toFixed(1)}"
-              stroke-linecap="round" transform="rotate(-90 28 28)"/>
-          </svg>
-          <div class="aipct" style="color:${col}">${sc}%</div>
-          <div class="aipct-l">AI 贡献</div>
-        </div>
-      </div>`;
-    }).join('');
+  document.getElementById('r-score').textContent=aci.toLocaleString();
+  document.getElementById('r-level').innerHTML=`${lv.e} ${lv.l} · ${lv.n}`;
+  document.getElementById('r-pbar').style.width=pct+'%';
+  document.getElementById('r-ptxt').textContent=`Top ${top}%`;
+  document.getElementById('dims').innerHTML=DC.map(d=>{const v=dims[d.k]||0,p=Math.round(v/d.max*100);return`<div class="dcard"><div class="dhdr"><span style="font-size:18px">${d.i}</span><span style="font-size:12px;font-weight:600">${d.n}</span><span class="dw">${d.w}</span></div><div class="db"><div class="dbf" style="width:${p}%;background:${d.c}"></div></div><div class="drow"><span class="dsc">${v} / ${d.max}</span><span class="dsub">${p>=70?'🔥 优秀':p>=40?'⚡ 良好':'🌱 待提升'}</span></div></div>`;}).join('');
+  if(projects?.length>0){
+    document.getElementById('projects').innerHTML=projects.map(p=>{const sc=p.aiScore||0,col=sc>60?'#00D4A8':sc>30?'#FFB347':'#6495ED',iv=p.isVibe===true;return`<div class="pj${iv?' vibe-pj':''}"><div>${iv?'<div class="vibe-tag">✨ Vibe 作品</div>':''}<div class="pjn">${p.name}</div><div class="pjd">${p.description||''}</div><div class="tags">${(p.aiKeywords||[]).map(t=>`<span class="tag tag-ai">${t}</span>`).join('')}${p.language?`<span class="tag tag-lang">${p.language}</span>`:''}</div><div class="pjh">${p.highlight||''}</div></div><div class="aiscore"><svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/><circle cx="28" cy="28" r="22" fill="none" stroke="${col}" stroke-width="5" stroke-dasharray="${(2*Math.PI*22*sc/100).toFixed(1)} ${(2*Math.PI*22).toFixed(1)}" stroke-linecap="round" transform="rotate(-90 28 28)"/></svg><div class="aipct" style="color:${col}">${sc}%</div><div class="aipct-l">AI 贡献</div></div></div>`;}).join('');
   } else {
-    document.getElementById('projects').innerHTML = `<div style="color:var(--muted);font-size:14px;padding:20px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:14px;">暂未检测到明显的 AI 相关项目。试着把你用 AI 构建的工具开源到 GitHub！</div>`;
+    document.getElementById('projects').innerHTML=`<div style="color:var(--muted);font-size:14px;padding:20px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:14px;">添加作品集后，DeepSeek 将分析每个项目的 AI 含量</div>`;
   }
-
-  // Analysis
-  document.getElementById('r-analysis').textContent = analysis || '—';
-  document.getElementById('r-tip').textContent = tip || '—';
-
-  // Badge
-  const login = gh?.user?.login || 'you';
-  const bc = aci>1000?'00C9A7':aci>500?'6495ED':'FFB347';
-  document.getElementById('badge-r').textContent = `ACI ${aci} · ${lv.n} ${lv.l}`;
-  document.getElementById('badge-r').style.background = '#' + bc;
-  document.getElementById('bcode').innerHTML = `[![AI Resume](https://img.shields.io/badge/AI%20Resume-ACI%20${aci}%20%C2%B7%20${lv.n}%20${encodeURIComponent(lv.l)}-${bc}?style=flat)](https://airesume.dev/@${login})<button class="cbtn" onclick="copyBadge()">复制</button>`;
-
-  // Radar
+  document.getElementById('r-analysis').textContent=analysis||'—';
+  document.getElementById('r-tip').textContent=tip||'—';
+  const bc=aci>1000?'00C9A7':aci>500?'6495ED':'FFB347';
+  document.getElementById('badge-r').textContent=`ACI ${aci} · ${lv.n} ${lv.l}`;
+  document.getElementById('badge-r').style.background='#'+bc;
+  document.getElementById('bcode').innerHTML=`[![AI Resume](https://img.shields.io/badge/AI%20Resume-ACI%20${aci}%20%C2%B7%20${lv.n}%20${encodeURIComponent(lv.l)}-${bc}?style=flat)](${BASE_URL}/@${login})<button class="cbtn" onclick="copyBadge()">复制</button>`;
   drawRadar(dims);
 }
 
-function drawRadar(dims) {
-  const cv = document.getElementById('radar');
-  const ctx = cv.getContext('2d');
-  const W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=Math.min(W,H)/2-28,n=6;
-  const labels=['模型调用','编程工具','AI代码','Prompt','应用构建','影响力'];
-  const maxV=[500,600,500,400,380,150];
-  const vals=[dims.d1||0,dims.d2||0,dims.d3||0,dims.d4||0,dims.d5||0,dims.d6||0];
-  const colors=['#00D4A8','#00D4A8','#FFB347','#6495ED','#FF4D8D','#9B8FF0'];
-  const ang=i=>(Math.PI*2*i/n)-Math.PI/2;
-  ctx.clearRect(0,0,W,H);
-  for(let l=1;l<=4;l++){ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*l/4;i===0?ctx.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):ctx.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}ctx.closePath();ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.stroke();}
-  for(let i=0;i<n;i++){const a=ang(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.stroke();}
-  ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*(vals[i]/maxV[i]);i===0?ctx.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):ctx.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}
-  ctx.closePath();ctx.fillStyle='rgba(0,212,168,.14)';ctx.fill();ctx.strokeStyle='#00D4A8';ctx.lineWidth=2;ctx.stroke();
-  for(let i=0;i<n;i++){const a=ang(i),rr=r*(vals[i]/maxV[i]);ctx.beginPath();ctx.arc(cx+rr*Math.cos(a),cy+rr*Math.sin(a),4,0,Math.PI*2);ctx.fillStyle=colors[i];ctx.fill();}
-  ctx.font='10px Inter,sans-serif';ctx.fillStyle='rgba(240,248,255,.45)';ctx.textAlign='center';ctx.textBaseline='middle';
-  for(let i=0;i<n;i++){const a=ang(i);ctx.fillText(labels[i],cx+(r+16)*Math.cos(a),cy+(r+16)*Math.sin(a));}
+// ═══════════════════════════════════════
+// ANALYTICS DASHBOARD
+// ═══════════════════════════════════════
+async function gotoAnalytics() {
+  goto('analytics');
+  const login=S.ghData?.user?.login;
+  if (!login) { document.getElementById('analytics-user-label').textContent='请先完成 GitHub 授权'; return; }
+  document.getElementById('analytics-user-label').textContent=`@${login} 的作品集数据`;
+  try {
+    const res=await fetch(`/api/analytics?user=${login}`);
+    const data=await res.json();
+    if (!data.kvEnabled) {
+      document.getElementById('no-kv-banner').style.display='block';
+      document.getElementById('s-today').textContent='—';
+      document.getElementById('s-total').textContent='—';
+      document.getElementById('s-avgtime').textContent='—';
+      document.getElementById('trend-bars').innerHTML='<p style="color:var(--muted);font-size:13px">需要配置 Vercel KV</p>';
+      document.getElementById('module-rows').innerHTML='';
+      document.getElementById('advice-insight').textContent='配置 Vercel KV 后可查看数据分析建议。';
+      return;
+    }
+    const s=data.stats||{};
+    document.getElementById('s-today').textContent=s.todayViews||0;
+    document.getElementById('s-total').textContent=s.totalViews||0;
+    document.getElementById('s-avgtime').textContent=s.avgTime||0;
+    // 7天趋势
+    const trend=s.trend7||[];
+    const maxV=Math.max(...trend.map(t=>t.views),1);
+    document.getElementById('trend-bars').innerHTML=trend.map(t=>`
+      <div class="bar-wrap">
+        <div class="bar" style="height:${Math.max(6,Math.round(t.views/maxV*72))}px" title="${t.views} 次"></div>
+        <div class="bar-lbl">${t.date.slice(5)}</div>
+      </div>`).join('');
+    // 模块热力
+    const mt=s.moduleTime||{};
+    const mNames={'score':'ACI 评分','radar':'雷达图','dims':'维度评分','projects':'项目分析','analysis':'能力报告','cta':'分享模块','badge':'GitHub Badge'};
+    const maxT=Math.max(...Object.values(mt),1);
+    document.getElementById('module-rows').innerHTML=Object.entries(mt)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([m,t])=>`<div class="mh-row">
+        <span class="mh-name">${mNames[m]||m}</span>
+        <div class="mh-bar"><div class="mh-fill" style="width:${Math.round(t/maxT*100)}%"></div></div>
+        <span class="mh-val">${t}s</span>
+      </div>`).join('') || '<p style="color:var(--muted);font-size:13px">暂无数据，等待访客浏览</p>';
+    // AI 建议
+    if (data.advice) {
+      document.getElementById('advice-insight').textContent=data.advice.insight||'—';
+      document.getElementById('advice-list').innerHTML=(data.advice.suggestions||[]).map(s=>`
+        <div class="advice-item"><strong>${s.title}</strong><span>${s.desc}</span></div>`).join('');
+    } else {
+      document.getElementById('advice-insight').textContent='数据量还不足以生成建议，等更多访客后再来看看。';
+    }
+  } catch(e) {
+    document.getElementById('advice-insight').textContent='加载失败：'+e.message;
+  }
 }
 
-// ══════════════════════════════════════════════════════
+// ═══════════════════════════════════════
 // UTILS
-// ══════════════════════════════════════════════════════
-function copyBadge() {
-  const t = document.getElementById('bcode').childNodes[0]?.textContent||'';
-  navigator.clipboard.writeText(t.trim()).then(()=>{
-    const b=document.querySelector('.cbtn');b.textContent='✅ 已复制';
-    setTimeout(()=>b.textContent='复制',2000);
-  });
-}
-function copyLink() {
-  const login = S.ghData?.user?.login||'you';
-  navigator.clipboard.writeText(`https://airesume.dev/@${login}`).then(()=>{
-    const b=event.target;b.textContent='✅ 已复制';setTimeout(()=>b.textContent='🔗 复制链接',2000);
-  });
-}
-function share() {
-  const aci = document.getElementById('r-score')?.textContent||'—';
-  const login = S.ghData?.user?.login||'you';
-  const text = `我在 AI Resume 测出了 ACI ${aci} 分！\n查看我的 AI 能力简历：https://airesume.dev/@${login}\n#AIResume #VibeCoding`;
-  if (navigator.share) navigator.share({title:'我的 AI 能力简历',text,url:`https://airesume.dev/@${login}`});
-  else navigator.clipboard.writeText(text).then(()=>alert('分享文案已复制！\n\n'+text));
-}
+// ═══════════════════════════════════════
+function drawRadar(dims){const cv=document.getElementById('radar'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height,cx=W/2,cy=H/2,r=Math.min(W,H)/2-28,n=6;const labels=['模型调用','编程工具','AI代码','Prompt','应用构建','影响力'],maxV=[500,600,500,400,380,150],vals=[dims.d1||0,dims.d2||0,dims.d3||0,dims.d4||0,dims.d5||0,dims.d6||0],colors=['#00D4A8','#00D4A8','#FFB347','#6495ED','#FF4D8D','#9B8FF0'],ang=i=>(Math.PI*2*i/n)-Math.PI/2;ctx.clearRect(0,0,W,H);for(let l=1;l<=4;l++){ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*l/4;i===0?ctx.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):ctx.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}ctx.closePath();ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.stroke();}for(let i=0;i<n;i++){const a=ang(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;ctx.stroke();}ctx.beginPath();for(let i=0;i<n;i++){const a=ang(i),rr=r*(vals[i]/maxV[i]);i===0?ctx.moveTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a)):ctx.lineTo(cx+rr*Math.cos(a),cy+rr*Math.sin(a));}ctx.closePath();ctx.fillStyle='rgba(0,212,168,.14)';ctx.fill();ctx.strokeStyle='#00D4A8';ctx.lineWidth=2;ctx.stroke();for(let i=0;i<n;i++){const a=ang(i),rr=r*(vals[i]/maxV[i]);ctx.beginPath();ctx.arc(cx+rr*Math.cos(a),cy+rr*Math.sin(a),4,0,Math.PI*2);ctx.fillStyle=colors[i];ctx.fill();}ctx.font='10px Inter,sans-serif';ctx.fillStyle='rgba(240,248,255,.45)';ctx.textAlign='center';ctx.textBaseline='middle';for(let i=0;i<n;i++){const a=ang(i);ctx.fillText(labels[i],cx+(r+16)*Math.cos(a),cy+(r+16)*Math.sin(a));}}
+function copyBadge(){const t=document.getElementById('bcode').childNodes[0]?.textContent||'';navigator.clipboard.writeText(t.trim()).then(()=>{const b=document.querySelector('.cbtn');b.textContent='✅ 已复制';setTimeout(()=>b.textContent='复制',2000);});}
+function copyLink(){const login=S.ghData?.user?.login||'you';navigator.clipboard.writeText(`${BASE_URL}/@${login}`).then(()=>{const b=event.target;b.textContent='✅ 已复制';setTimeout(()=>b.textContent='🔗 分享',2000);});}
+function shareResult(){const aci=document.getElementById('r-score')?.textContent||'—',login=S.ghData?.user?.login||'you',lv=document.getElementById('r-level')?.textContent||'',vn=S.portfolio.length,text=`我在 AI Resume 测出了 ACI ${aci} 分（${lv}）！${vn>0?`\n展示了 ${vn} 件 AI 作品`:''}
+查看我的 AI 简历：${BASE_URL}/@${login}
+#AIResume #VibeCoding`;if(navigator.share)navigator.share({title:'我的 AI 能力简历',text,url:`${BASE_URL}/@${login}`});else navigator.clipboard.writeText(text).then(()=>alert('分享文案已复制！'));}
+function submitEmail(){const email=document.getElementById('email-input').value.trim();if(!email||!email.includes('@')){alert('请输入有效邮箱');return;}const list=JSON.parse(localStorage.getItem('ai_resume_emails')||'[]');if(!list.includes(email)){list.push(email);localStorage.setItem('ai_resume_emails',JSON.stringify(list));}document.getElementById('email-ok').style.display='block';document.getElementById('email-input').value='';console.log('[邮件]',email);}
 </script>
 </body>
 </html>
